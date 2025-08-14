@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
-use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Core\Controller\EditUser as ParentController;
+use FacturaScripts\Core\Where;
 
 class EditUser extends ParentController
 {
@@ -36,7 +36,7 @@ class EditUser extends ParentController
         switch ($viewName) {
             case 'ListEmployeeOpen':
                 $nick = $this->getViewModelValue('EditUser', 'nick');
-                $where = [new DataBaseWhere('user_facturascripts_nick', $nick)];
+                $where = [Where::column('user_facturascripts_nick', $nick)];
                 $view->loadData('', $where);
 
             default:

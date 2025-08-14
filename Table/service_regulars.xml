@@ -341,14 +341,6 @@
         <type>FOREIGN KEY (idvehicle) REFERENCES vehicles (idvehicle) ON DELETE RESTRICT ON UPDATE RESTRICT</type>
     </constraint>
     <constraint>
-        <name>ca_service_regulars_km_nacional__subcuentas</name>
-        <type>FOREIGN KEY (codsubcuenta_km_nacional) REFERENCES subcuentas (codsubcuenta) ON DELETE RESTRICT ON UPDATE RESTRICT</type>
-    </constraint>
-    <constraint>
-        <name>ca_service_regulars_km_extranjero__subcuentas</name>
-        <type>FOREIGN KEY (codsubcuenta_km_extranjero) REFERENCES subcuentas (codsubcuenta) ON DELETE RESTRICT ON UPDATE RESTRICT</type>
-    </constraint>
-    <constraint>
         <name>ca_service_regulars__impuestos</name>
         <type>FOREIGN KEY (codimpuesto) REFERENCES impuestos (codimpuesto) ON DELETE RESTRICT ON UPDATE RESTRICT</type>
     </constraint>

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
-use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Core\Lib\ExtendedController\EditController;
+use FacturaScripts\Core\Where;
 use FacturaScripts\Plugins\OpenServBus\Model\Collaborator;
 use FacturaScripts\Plugins\OpenServBus\Model\Driver;
 
@@ -38,7 +38,7 @@ class EditVehicle extends EditController
         $pageData['showonmenu'] = false;
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'vehicle';
-        $pageData['icon'] = 'fas fa-bus-alt';
+        $pageData['icon'] = 'fa-solid fa-bus-alt';
         return $pageData;
     }
 
@@ -50,9 +50,9 @@ class EditVehicle extends EditController
         $this->setTabsPosition('top');
     }
 
-    protected function createViewVehicleDocumentation($viewName = 'ListVehicleDocumentation')
+    protected function createViewVehicleDocumentation($viewName = 'ListVehicleDocumentation'): void
     {
-        $this->addListView($viewName, 'VehicleDocumentation', 'documentation', 'far fa-file-pdf');
+        $this->addListView($viewName, 'VehicleDocumentation', 'documentation', 'fa-regular fa-file-pdf');
         $this->views[$viewName]->addSearchFields(['nombre']);
         $this->views[$viewName]->addOrderBy(['nombre'], 'name', 1);
         $this->views[$viewName]->addOrderBy(['idvehicle', 'nombre'], 'vehicle-type-doc');
@@ -70,7 +70,7 @@ class EditVehicle extends EditController
         $this->views[$viewName]->addFilterPeriod('porFechaCaducidad', 'date-expiration', 'fecha_caducidad');
     }
 
-    protected function createViewVehicleEquipament($viewName = 'ListVehicleEquipament')
+    protected function createViewVehicleEquipament($viewName = 'ListVehicleEquipament'): void
     {
         $this->addListView($viewName, 'VehicleEquipament', 'equipment', 'fab fa-accessible-icon');
         $this->views[$viewName]->addOrderBy(['idvehicle', 'idvehicle_equipament_type'], 'vehicle-equipment-plus', 1);
@@ -94,7 +94,7 @@ class EditVehicle extends EditController
             case 'ListVehicleDocumentation':
             case 'ListVehicleEquipament':
                 $idvehicle = $this->getViewModelValue($mvn, 'idvehicle');
-                $where = [new DatabaseWhere('idvehicle', $idvehicle)];
+                $where = [Where::column('idvehicle', $idvehicle)];
                 $view->loadData('', $where);
                 break;
 
@@ -111,7 +111,7 @@ class EditVehicle extends EditController
         }
     }
 
-    protected function loadValuesSelectCollaborators(string $mvn)
+    protected function loadValuesSelectCollaborators(string $mvn): void
     {
         $column = $this->views[$mvn]->columnForName('collaborator');
         if($column && $column->widget->getType() === 'select') {
@@ -128,7 +128,7 @@ class EditVehicle extends EditController
         }
     }
 
-    protected function loadValuesSelectDrivers(string $mvn)
+    protected function loadValuesSelectDrivers(string $mvn): void
     {
         $column = $this->views[$mvn]->columnForName('usual-driver');
         if($column && $column->widget->getType() === 'select') {
@@ -145,7 +145,7 @@ class EditVehicle extends EditController
         }
     }
 
-    protected function PonerEnVistaLaEdad($p_viewName)
+    protected function PonerEnVistaLaEdad($p_viewName): void
     {
         if (!empty($this->views[$p_viewName]->model->fecha_matriculacion_primera)) {
             $intervalo = date_diff(date_create(date("Y-m-d H:i:s"))

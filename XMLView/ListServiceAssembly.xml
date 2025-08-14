@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,10 +23,10 @@
             <widget type="text" fieldname="idservice_assembly"/>
         </column>
         <column name="code1" title="service-regular" numcolumns="2" order="110">
-            <widget type="text" fieldname="cod_servicio" icon="fas fa-hashtag" maxlength="20" readonly="true"/>
+            <widget type="text" fieldname="cod_servicio" icon="fa-solid fa-hashtag" maxlength="20" readonly="true"/>
         </column>
         <column name="code2" title="service-discretionary" numcolumns="2" order="120">
-            <widget type="text" fieldname="idservice" icon="fas fa-hashtag" maxlength="20" readonly="true"/>
+            <widget type="text" fieldname="idservice" icon="fa-solid fa-hashtag" maxlength="20" readonly="true"/>
         </column>
         <column name="description" order="130">
             <widget type="text" fieldname="nombre"/>
@@ -65,7 +65,7 @@
         </column>
     </columns>
     <modals>
-        <group name="gen-assemblies" title="generate-assemblies" icon="fas fa-magic">
+        <group name="gen-assemblies" title="generate-assemblies" icon="fa-solid fa-magic">
             <column name="date-assembly" order="100">
                 <widget type="date" fieldname="date_assembly"/>
             </column>
@@ -78,7 +78,7 @@
         </row>
         <row type="actions">
             <button type="modal" label="generate-assemblies" color="warning" action="gen-assemblies"
-                    icon="fas fa-magic"/>
+                    icon="fa-solid fa-magic"/>
         </row>
     </rows>
 </view>

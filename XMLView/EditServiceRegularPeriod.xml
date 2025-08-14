@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
                 <widget type="text" fieldname="idservice_regular" readonly="true"/>
             </column>
             <column name="service-regular" numcolumns="4" order="110">
-                <widget type="select" fieldname="idservice_regular" icon="fas fa-book-open"
+                <widget type="select" fieldname="idservice_regular" icon="fa-solid fa-book-open"
                         onclick="EditServiceRegular" readonly="dinamic">
                     <values source="service_regulars" fieldcode="idservice_regular" fieldtitle="nombre"/>
                 </widget>
@@ -36,7 +36,7 @@
                 <widget type="date" fieldname="fecha_hasta" required="true"/>
             </column>
         </group>
-        <group name="anticipation" numcolumns="5" icon="fas fa-hourglass-start" title="anticipation" valign="bottom">
+        <group name="anticipation" numcolumns="5" icon="fa-solid fa-hourglass-start" title="anticipation" valign="bottom">
             <column name="inicio_horaAnt" title="anticipation-hour" numcolumns="4" order="100">
                 <widget type="time" fieldname="hora_anticipacion"/>
             </column>
@@ -44,7 +44,7 @@
                 <widget type="checkbox" fieldname="salida_desde_nave_sn"/>
             </column>
         </group>
-        <group name="horario" numcolumns="7" icon="far fa-clock" title="horario">
+        <group name="horario" numcolumns="7" icon="fa-regular fa-clock" title="horario">
             <column name="inicio_hora" title="start-time" numcolumns="3" order="100">
                 <widget type="time" fieldname="hora_desde"/>
             </column>
@@ -52,12 +52,12 @@
                 <widget type="time" fieldname="hora_hasta"/>
             </column>
         </group>
-        <group name="observations" numcolumns="12" icon="fas fa-info-circle" title="observations">
+        <group name="observations" numcolumns="12" icon="fa-solid fa-info-circle" title="observations">
             <column name="observations" numcolumns="12" order="100">
                 <widget type="textarea" fieldname="observaciones"/>
             </column>
         </group>
-        <group name="record-status" numcolumns="12" icon="fas fa-cog" title="Estado del registro">
+        <group name="record-status" numcolumns="12" icon="fa-solid fa-cog" title="Estado del registro">
             <column name="active" numcolums="12" order="100">
                 <widget type="checkbox" fieldname="activo"/>
             </column>
@@ -67,19 +67,19 @@
                 <widget type="datetime" fieldname="fechaalta" readonly="true"/>
             </column>
             <column name="created-by" numcolumns="9" order="110">
-                <widget type="text" icon="fas fa-user-circle" fieldname="useralta" readonly="true"/>
+                <widget type="text" icon="fa-solid fa-user-circle" fieldname="useralta" readonly="true"/>
             </column>
             <column name="modification-date" numcolumns="3" order="120">
                 <widget type="datetime" fieldname="fechamodificacion" readonly="true"/>
             </column>
             <column name="modified-by" numcolumns="9" order="130">
-                <widget type="text" icon="fas fa-user-circle" fieldname="usermodificacion" readonly="true"/>
+                <widget type="text" icon="fa-solid fa-user-circle" fieldname="usermodificacion" readonly="true"/>
             </column>
             <column name="deletion-date" numcolumns="3" order="140">
                 <widget type="datetime" fieldname="fechabaja" readonly="true"/>
             </column>
             <column name="deleted-by" numcolumns="9" order="150">
-                <widget type="text" icon="fas fa-user-circle" fieldname="userbaja" readonly="true"/>
+                <widget type="text" icon="fa-solid fa-user-circle" fieldname="userbaja" readonly="true"/>
             </column>
             <column name="deleted-motif" description="only-fill-inactive-record" numcolumns="12" order="160">
                 <widget type="text" fieldname="motivobaja" maxlength="100"/>

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,13 +20,16 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
+
 use FacturaScripts\Dinamic\Model\Proveedor;
 
-class Collaborator extends Base\ModelClass
+class Collaborator extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     /** @var bool */
@@ -71,18 +74,18 @@ class Collaborator extends Base\ModelClass
         return null;
     }
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->activo = true;
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->fechaalta = Tools::date();
         $this->useralta = Session::get('user')->nick ?? null;
     }
 
     public function getProveedor(): Proveedor
     {
         $proveedor = new Proveedor();
-        $proveedor->loadFromCode($this->codproveedor);
+        $proveedor->load($this->codproveedor);
         return $proveedor;
     }
 
@@ -102,10 +105,9 @@ class Collaborator extends Base\ModelClass
             return false;
         }
 
-        $utils = $this->toolBox()->utils();
-        $this->codproveedor = $utils->noHtml($this->codproveedor);
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
+        $this->codproveedor = Tools::noHtml($this->codproveedor);
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
         return parent::test();
     }
 
@@ -117,7 +119,7 @@ class Collaborator extends Base\ModelClass
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
-        return parent::saveUpdate($values);
+        $this->fechamodificacion = Tools::date();
+        return parent::saveUpdate();
     }
 }

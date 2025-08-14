@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,14 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
 
-class ServiceRegularCombinationServ extends Base\ModelClass
+class ServiceRegularCombinationServ extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     /** @var bool */
@@ -70,11 +72,11 @@ class ServiceRegularCombinationServ extends Base\ModelClass
     /** @var string */
     public $usermodificacion;
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->activo = true;
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->fechaalta = Tools::date();
         $this->useralta = Session::get('user')->nick ?? null;
     }
 
@@ -91,7 +93,7 @@ class ServiceRegularCombinationServ extends Base\ModelClass
     public function getCombination(): ServiceRegularCombination
     {
         $combination = new ServiceRegularCombination();
-        $combination->loadFromCode($this->idservice_regular_combination);
+        $combination->load($this->idservice_regular_combination);
         return $combination;
     }
 
@@ -137,10 +139,9 @@ class ServiceRegularCombinationServ extends Base\ModelClass
         if ($this->comprobarDiasSemana() === false) {
             return false;
         }
-
-        $utils = $this->toolBox()->utils();
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
+        
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
         return parent::test();
     }
 
@@ -149,7 +150,7 @@ class ServiceRegularCombinationServ extends Base\ModelClass
         return parent::url($type, $list . '?activetab=List');
     }
 
-    protected function actualizarCombinadoSNEnServicioRegular()
+    protected function actualizarCombinadoSNEnServicioRegular(): void
     {
         $sql = ' SELECT COUNT(*) AS cantidad '
             . ' FROM service_regular_combination_servs '
@@ -289,7 +290,7 @@ class ServiceRegularCombinationServ extends Base\ModelClass
         }
 
         if ($coincideAlgunDiaDeLaSemana === false) {
-            $this->toolBox()->i18nLog()->error("none-weekdays-service-match-weekdays-combination");
+            Tools::log()->error("none-weekdays-service-match-weekdays-combination");
         }
 
 
@@ -312,18 +313,17 @@ class ServiceRegularCombinationServ extends Base\ModelClass
                 if (empty($this->iddriver)) {
                     $this->iddriver = $fila['iddriver'];
                     if (!empty($this->iddriver)) {
-                        $this->toolBox()->i18nLog()->info("driver-auto-filled-from-combination");
+                        Tools::log()->info("driver-auto-filled-from-combination");
                     }
                 }
 
                 if (empty($this->idvehicle)) {
                     $this->idvehicle = $fila['idvehicle'];
                     if (!empty($this->idvehicle)) {
-                        $this->toolBox()->i18nLog()->info("vehicle-auto-filled-from-combination.");
+                        Tools::log()->info("vehicle-auto-filled-from-combination.");
                     }
                 }
             }
-
 
             // Si tras cargar de la combinación todavía hay falta de vehículo o conductor,
             // intentamos cargar conductor o vehículo del servicio regular
@@ -339,14 +339,14 @@ class ServiceRegularCombinationServ extends Base\ModelClass
                     if (empty($this->iddriver)) {
                         $this->iddriver = $fila['iddriver'];
                         if (!empty($this->iddriver)) {
-                            $this->toolBox()->i18nLog()->info("driver-auto-filled-from-regular-service");
+                            Tools::log()->info("driver-auto-filled-from-regular-service");
                         }
                     }
 
                     if (empty($this->idvehicle)) {
                         $this->idvehicle = $fila['idvehicle'];
                         if (!empty($this->idvehicle)) {
-                            $this->toolBox()->i18nLog()->info("vehicle-auto-filled-from-regular-service");
+                            Tools::log()->info("vehicle-auto-filled-from-regular-service");
                         }
                     }
                 }
@@ -356,27 +356,27 @@ class ServiceRegularCombinationServ extends Base\ModelClass
             // Saltará la restricción de campo obligatorio de la tabla
             if (empty($this->iddriver) or empty($this->idvehicle)) {
                 $aRellenar = '';
-                $tampoco = $this->toolBox()->i18n()->trans('also-it-was-not-filled');
-                $noPude = $this->toolBox()->i18n()->trans('i-couldnt-complete');
+                $tampoco = Tools::lang()->trans('also-it-was-not-filled');
+                $noPude = Tools::lang()->trans('i-couldnt-complete');
 
                 if (empty($this->iddriver)) {
                     if ($aRellenar === '') {
-                        $aRellenar .= ' ' . $this->toolBox()->i18n()->trans('and') . ' ';
-                        $tampoco = $this->toolBox()->i18n()->trans('also-they-were-not-refilled');
-                        $noPude = $this->toolBox()->i18n()->trans('i-couldnt-complete-them');
+                        $aRellenar .= ' ' . Tools::lang()->trans('and') . ' ';
+                        $tampoco = Tools::lang()->trans('also-they-were-not-refilled');
+                        $noPude = Tools::lang()->trans('i-couldnt-complete-them');
                     }
-                    $aRellenar .= $this->toolBox()->i18n()->trans('the-driver');
+                    $aRellenar .= Tools::lang()->trans('the-driver');
                 }
 
                 if (empty($this->idvehicle)) {
                     if ($aRellenar === '') {
                         $aRellenar .= ' y ';
-                        $tampoco = $this->toolBox()->i18n()->trans('also-they-were-not-refilled');
+                        $tampoco = Tools::lang()->trans('also-they-were-not-refilled');
                     }
-                    $aRellenar .= $this->toolBox()->i18n()->trans('the-vehicle');
+                    $aRellenar .= Tools::lang()->trans('the-vehicle');
                 }
 
-                $this->toolBox()->i18nLog()->error("complete-combination-service-or-regular-service", ['%aRellenar%' => $aRellenar, '%tampoco%' => $tampoco, '%noPude%' => $noPude]);
+                Tools::log()->error("complete-combination-service-or-regular-service", ['%aRellenar%' => $aRellenar, '%tampoco%' => $tampoco, '%noPude%' => $noPude]);
                 return false;
             }
         }
@@ -387,7 +387,7 @@ class ServiceRegularCombinationServ extends Base\ModelClass
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
-        return parent::saveUpdate($values);
+        $this->fechamodificacion = Tools::date();
+        return parent::saveUpdate();
     }
 }

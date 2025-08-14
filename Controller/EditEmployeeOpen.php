@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
-use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Core\Lib\ExtendedController\EditController;
+use FacturaScripts\Core\Where;
 
 class EditEmployeeOpen extends EditController
 {
@@ -36,7 +36,7 @@ class EditEmployeeOpen extends EditController
         $pageData['showonmenu'] = false;
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'employee';
-        $pageData['icon'] = 'far fa-id-card';
+        $pageData['icon'] = 'fa-regular fa-id-card';
         return $pageData;
     }
 
@@ -49,9 +49,9 @@ class EditEmployeeOpen extends EditController
         $this->setTabsPosition('top');
     }
 
-    protected function createViewEmployeeContract($viewName = 'ListEmployeeContract')
+    protected function createViewEmployeeContract($viewName = 'ListEmployeeContract'): void
     {
-        $this->addListView($viewName, 'EmployeeContract', 'contracts-made', 'fas fa-id-badge');
+        $this->addListView($viewName, 'EmployeeContract', 'contracts-made', 'fa-solid fa-id-badge');
         $this->views[$viewName]->addSearchFields(['nombre']);
         $this->views[$viewName]->addOrderBy(['fecha_inicio', 'fecha_fin'], 'fstart-fend');
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -68,9 +68,9 @@ class EditEmployeeOpen extends EditController
         $this->views[$viewName]->addFilterAutocomplete('xIdemployee_contract_type', 'contract-type', 'idemployee_contract_type', 'employee_contract_types', 'idemployee_contract_type', 'nombre');
     }
 
-    protected function createViewEmployeeAttendanceManagementYn($viewName = 'ListEmployeeAttendanceManagementYn')
+    protected function createViewEmployeeAttendanceManagementYn($viewName = 'ListEmployeeAttendanceManagementYn'): void
     {
-        $this->addListView($viewName, 'EmployeeAttendanceManagementYn', 'are-you-required-to-check-presence', 'fas fa-business-timee');
+        $this->addListView($viewName, 'EmployeeAttendanceManagementYn', 'are-you-required-to-check-presence', 'fa-solid fa-business-timee');
         $this->views[$viewName]->addSearchFields(['idemployee', 'nombre']);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
@@ -82,9 +82,9 @@ class EditEmployeeOpen extends EditController
         $this->views[$viewName]->addFilterSelect('soloActivos', 'active-all', 'activo', $activo);
     }
 
-    protected function createViewEmployeeDocumentation($viewName = 'ListEmployeeDocumentation')
+    protected function createViewEmployeeDocumentation($viewName = 'ListEmployeeDocumentation'): void
     {
-        $this->addListView($viewName, 'EmployeeDocumentation', 'documentation', 'far fa-file-pdf');
+        $this->addListView($viewName, 'EmployeeDocumentation', 'documentation', 'fa-regular fa-file-pdf');
         $this->views[$viewName]->addSearchFields(['nombre']);
         $this->views[$viewName]->addOrderBy(['nombre'], 'name', 1);
         $this->views[$viewName]->addOrderBy(['iddocumentation_type', 'nombre'], 'doctype-name');
@@ -111,7 +111,7 @@ class EditEmployeeOpen extends EditController
             case 'ListEmployeeContract':
             case 'ListEmployeeAttendanceManagementYn':
                 $idemployee = $this->getViewModelValue($mvn, 'idemployee');
-                $where = [new DatabaseWhere('idemployee', $idemployee)];
+                $where = [Where::column('idemployee', $idemployee)];
                 $view->loadData('', $where);
                 break;
 
@@ -126,7 +126,7 @@ class EditEmployeeOpen extends EditController
         }
     }
 
-    protected function ponerContratoActivoEnVista(string $mvn)
+    protected function ponerContratoActivoEnVista(string $mvn): void
     {
         // Rellenamos el widget de tipo text para el tipo de contrato
         $idemployee = $this->getViewModelValue($mvn, 'idemployee');

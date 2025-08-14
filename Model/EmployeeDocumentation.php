@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,14 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
 
-class EmployeeDocumentation extends Base\ModelClass
+class EmployeeDocumentation extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     public $activo;
@@ -56,18 +58,18 @@ class EmployeeDocumentation extends Base\ModelClass
 
     public $usermodificacion;
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->activo = true;
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->fechaalta = Tools::date();
         $this->useralta = Session::get('user')->nick ?? null;
     }
 
     public function getDocumentarioType(): DocumentationType
     {
         $documentation_type = new DocumentationType();
-        $documentation_type->loadFromCode($this->iddocumentation_type);
+        $documentation_type->load($this->iddocumentation_type);
         return $documentation_type;
     }
 
@@ -96,15 +98,14 @@ class EmployeeDocumentation extends Base\ModelClass
 
         if (empty($this->fecha_caducidad)) {
             if ($this->getDocumentarioType()->fechacaducidad_obligarla) {
-                $this->toolBox()->i18nLog()->error('type-document-need-expiration-date');
+                Tools::log()->error('type-document-need-expiration-date');
                 return false;
             }
         }
 
-        $utils = $this->toolBox()->utils();
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->nombre = $utils->noHtml($this->nombre);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->nombre = Tools::noHtml($this->nombre);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
         return parent::test();
     }
 
@@ -116,7 +117,7 @@ class EmployeeDocumentation extends Base\ModelClass
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
-        return parent::saveUpdate($values);
+        $this->fechamodificacion = Tools::date();
+        return parent::saveUpdate();
     }
 }

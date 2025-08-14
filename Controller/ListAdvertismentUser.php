@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,6 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
-use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Core\Lib\ExtendedController\ListController;
 
 class ListAdvertismentUser extends ListController
@@ -30,7 +29,7 @@ class ListAdvertismentUser extends ListController
         $pageData = parent::getPageData();
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'warnings';
-        $pageData['icon'] = 'fas fa-exclamation-triangle';
+        $pageData['icon'] = 'fa-solid fa-exclamation-triangle';
         return $pageData;
     }
 
@@ -39,9 +38,9 @@ class ListAdvertismentUser extends ListController
         $this->createAdvertismentUser();
     }
 
-    protected function createAdvertismentUser($viewName = 'ListAdvertismentUser')
+    protected function createAdvertismentUser($viewName = 'ListAdvertismentUser'): void
     {
-        $this->addView($viewName, 'AdvertismentUser', 'warnings', 'fas fa-exclamation-triangle');
+        $this->addView($viewName, 'AdvertismentUser', 'warnings', 'fa-solid fa-exclamation-triangle');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['nombre', 'inicio', 'fin'], 'notice-start-end', 1);
         $this->addOrderBy($viewName, ['nick', 'nombre', 'inicio', 'fin'], 'user-notice-start-end');

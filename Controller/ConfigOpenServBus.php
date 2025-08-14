@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ class ConfigOpenServBus extends PanelController
         $pageData = parent::getPageData();
         $pageData['menu'] = 'admin';
         $pageData['title'] = 'OpenServBus';
-        $pageData['icon'] = 'fas fa-bus';
+        $pageData['icon'] = 'fa-solid fa-bus';
         return $pageData;
     }
 
@@ -48,9 +48,9 @@ class ConfigOpenServBus extends PanelController
         $this->createViewVehicleType();
     }
 
-    protected function createViewDocumentationType($viewName = 'ListDocumentationType')
+    protected function createViewDocumentationType($viewName = 'ListDocumentationType'): void
     {
-        $this->addListView($viewName, 'DocumentationType', 'documentation_type', 'fas fa-address-card');
+        $this->addListView($viewName, 'DocumentationType', 'documentation_type', 'fa-solid fa-address-card');
         $this->views[$viewName]->addSearchFields(['nombre']);
         $this->views[$viewName]->addOrderBy(['nombre'], 'name', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -71,9 +71,9 @@ class ConfigOpenServBus extends PanelController
         $this->views[$viewName]->addFilterSelect('soloActivos', 'active-all', 'activo', $activo);
     }
 
-    protected function createViewEmployeeContractType($viewName = 'ListEmployeeContractType')
+    protected function createViewEmployeeContractType($viewName = 'ListEmployeeContractType'): void
     {
-        $this->addListView($viewName, 'EmployeeContractType', 'employee_contract_type', 'fas fa-file-signature');
+        $this->addListView($viewName, 'EmployeeContractType', 'employee_contract_type', 'fa-solid fa-file-signature');
         $this->views[$viewName]->addSearchFields(['nombre']);
         $this->views[$viewName]->addOrderBy(['nombre'], 'name', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -86,9 +86,9 @@ class ConfigOpenServBus extends PanelController
         $this->views[$viewName]->addFilterSelect('soloActivos', 'active-all', 'activo', $activo);
     }
 
-    protected function createViewFuelType($viewName = 'ListFuelType')
+    protected function createViewFuelType($viewName = 'ListFuelType'): void
     {
-        $this->addListView($viewName, 'FuelType', 'fuel_type', 'fas fa-gas-pump');
+        $this->addListView($viewName, 'FuelType', 'fuel_type', 'fa-solid fa-gas-pump');
         $this->views[$viewName]->addSearchFields(['nombre']);
         $this->views[$viewName]->addOrderBy(['nombre'], 'name', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -101,9 +101,9 @@ class ConfigOpenServBus extends PanelController
         $this->views[$viewName]->addFilterSelect('soloActivos', 'active-all', 'activo', $activo);
     }
 
-    protected function createViewServiceType($viewName = 'ListServiceType')
+    protected function createViewServiceType($viewName = 'ListServiceType'): void
     {
-        $this->addListView($viewName, 'ServiceType', 'service-type', 'fas fa-dolly');
+        $this->addListView($viewName, 'ServiceType', 'service-type', 'fa-solid fa-dolly');
         $this->views[$viewName]->addSearchFields(['nombre']);
         $this->views[$viewName]->addOrderBy(['nombre'], 'name', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -116,9 +116,9 @@ class ConfigOpenServBus extends PanelController
         $this->views[$viewName]->addFilterSelect('soloActivos', 'active-all', 'activo', $activo);
     }
 
-    protected function createViewTarjetaType($viewName = 'ListTarjetaType')
+    protected function createViewTarjetaType($viewName = 'ListTarjetaType'): void
     {
-        $this->addListView($viewName, 'TarjetaType', 'tarjeta_type', 'far fa-credit-card');
+        $this->addListView($viewName, 'TarjetaType', 'tarjeta_type', 'fa-regular fa-credit-card');
         $this->views[$viewName]->addSearchFields(['nombre']);
         $this->views[$viewName]->addOrderBy(['nombre'], 'name', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -137,9 +137,9 @@ class ConfigOpenServBus extends PanelController
         $this->views[$viewName]->addFilterSelect('esDepago', 'De pago = TODO', 'de_pago', $esDePago);
     }
 
-    protected function createViewVehicleEquipamentType($viewName = 'ListVehicleEquipamentType')
+    protected function createViewVehicleEquipamentType($viewName = 'ListVehicleEquipamentType'): void
     {
-        $this->addListView($viewName, 'VehicleEquipamentType', 'vehicle_equipament_type', 'fas fa-wheelchair');
+        $this->addListView($viewName, 'VehicleEquipamentType', 'vehicle_equipament_type', 'fa-solid fa-wheelchair');
         $this->views[$viewName]->addSearchFields(['nombre']);
         $this->views[$viewName]->addOrderBy(['nombre'], 'name', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -152,9 +152,9 @@ class ConfigOpenServBus extends PanelController
         $this->views[$viewName]->addFilterSelect('soloActivos', 'active-all', 'activo', $activo);
     }
 
-    protected function createViewVehicleType($viewName = 'ListVehicleType')
+    protected function createViewVehicleType($viewName = 'ListVehicleType'): void
     {
-        $this->addListView($viewName, 'VehicleType', 'vehicle_type', 'fas fa-tractor');
+        $this->addListView($viewName, 'VehicleType', 'vehicle_type', 'fa-solid fa-tractor');
         $this->views[$viewName]->addSearchFields(['nombre']);
         $this->views[$viewName]->addOrderBy(['nombre'], 'name', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');

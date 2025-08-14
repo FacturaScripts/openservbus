@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
-use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Core\Lib\ExtendedController\ListController;
+use FacturaScripts\Core\Where;
 
 class ListHelper extends ListController
 {
@@ -30,7 +30,7 @@ class ListHelper extends ListController
         $pageData = parent::getPageData();
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'files';
-        $pageData['icon'] = 'fas fa-archive';
+        $pageData['icon'] = 'fa-solid fa-archive';
         return $pageData;
     }
 
@@ -43,9 +43,9 @@ class ListHelper extends ListController
         $this->createViewIdentificationMean();
     }
 
-    protected function createViewCollaborator($viewName = 'ListCollaborator')
+    protected function createViewCollaborator($viewName = 'ListCollaborator'): void
     {
-        $this->addView($viewName, 'Collaborator', 'collaborator', 'fas fa-business-time');
+        $this->addView($viewName, 'Collaborator', 'collaborator', 'fa-solid fa-business-time');
         $this->addSearchFields($viewName, ['codproveedor', 'nombre']);
         $this->addOrderBy($viewName, ['codproveedor'], 'cod-supplier');
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -58,9 +58,9 @@ class ListHelper extends ListController
         $this->addFilterSelect($viewName, 'soloActivos', 'active-all', 'activo', $activo);
     }
 
-    protected function createViewDepartment($viewName = 'ListDepartment')
+    protected function createViewDepartment($viewName = 'ListDepartment'): void
     {
-        $this->addView($viewName, 'Department', 'departments', 'fas fa-book-reader');
+        $this->addView($viewName, 'Department', 'departments', 'fa-solid fa-book-reader');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['nombre'], 'name', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -73,9 +73,9 @@ class ListHelper extends ListController
         $this->addFilterSelect($viewName, 'soloActivos', 'active-all', 'activo', $activo);
     }
 
-    protected function createViewGarage($viewName = 'ListGarage')
+    protected function createViewGarage($viewName = 'ListGarage'): void
     {
-        $this->addView($viewName, 'Garage', 'garages', 'fas fa-warehouse');
+        $this->addView($viewName, 'Garage', 'garages', 'fa-solid fa-warehouse');
         $this->addSearchFields($viewName, ['nombre', 'direccion']);
         $this->addOrderBy($viewName, ['nombre'], 'Nombre', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -90,9 +90,9 @@ class ListHelper extends ListController
         $this->addFilterAutocomplete($viewName, 'xIdEmpresa', 'company', 'idempresa', 'empresas', 'idempresa', 'nombre');
     }
 
-    protected function createViewHelper($viewName = 'ListHelper')
+    protected function createViewHelper($viewName = 'ListHelper'): void
     {
-        $this->addView($viewName, 'Helper', 'monitors', 'fas fa-user-graduate');
+        $this->addView($viewName, 'Helper', 'monitors', 'fa-solid fa-user-graduate');
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
         // Filtros
@@ -104,15 +104,15 @@ class ListHelper extends ListController
 
         $status = [
             ['label' => 'collaborators-employess-all', 'where' => []],
-            ['label' => 'collaborators-only', 'where' => [new DataBaseWhere('idcollaborator', '0', '>')]],
-            ['label' => 'employees-only', 'where' => [new DataBaseWhere('idemployee', '0', '>')]]
+            ['label' => 'collaborators-only', 'where' => [Where::column('idcollaborator', '0', '>')]],
+            ['label' => 'employees-only', 'where' => [Where::column('idemployee', '0', '>')]]
         ];
         $this->addFilterSelectWhere($viewName, 'status', $status);
     }
 
-    protected function createViewIdentificationMean($viewName = 'ListIdentificationMean')
+    protected function createViewIdentificationMean($viewName = 'ListIdentificationMean'): void
     {
-        $this->addView($viewName, 'IdentificationMean', 'means-of-identification', 'far fa-hand-point-right');
+        $this->addView($viewName, 'IdentificationMean', 'means-of-identification', 'fa-regular fa-hand-point-right');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['nombre'], 'name', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');

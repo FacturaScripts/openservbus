@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@ class ListVehicleDocumentation extends ListController
         $pageData = parent::getPageData();
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'documentation';
-        $pageData['icon'] = 'far fa-file-pdf';
+        $pageData['icon'] = 'fa-regular fa-file-pdf';
         return $pageData;
     }
 
@@ -39,9 +39,9 @@ class ListVehicleDocumentation extends ListController
         $this->createViewEmployeeDocumentation();
     }
 
-    protected function createViewEmployeeDocumentation($viewName = 'ListEmployeeDocumentation')
+    protected function createViewEmployeeDocumentation($viewName = 'ListEmployeeDocumentation'): void
     {
-        $this->addView($viewName, 'EmployeeDocumentation', 'employee', 'fas fa-user');
+        $this->addView($viewName, 'EmployeeDocumentation', 'employee', 'fa-solid fa-user');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['nombre'], 'name', 1);
         $this->addOrderBy($viewName, ['iddocumentation_type', 'nombre'], 'doctype-name');
@@ -60,9 +60,9 @@ class ListVehicleDocumentation extends ListController
         $this->addFilterPeriod($viewName, 'porFechaCaducidad', 'date-expiration', 'fecha_caducidad');
     }
 
-    protected function createViewVehicleDocumentation($viewName = 'ListVehicleDocumentation')
+    protected function createViewVehicleDocumentation($viewName = 'ListVehicleDocumentation'): void
     {
-        $this->addView($viewName, 'VehicleDocumentation', 'vehicles', 'far fa-file-pdf');
+        $this->addView($viewName, 'VehicleDocumentation', 'vehicles', 'fa-regular fa-file-pdf');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['nombre'], 'name', 1);
         $this->addOrderBy($viewName, ['idvehicle', 'nombre'], 'vehicle-type-doc');

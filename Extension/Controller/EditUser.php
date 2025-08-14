@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,14 +21,14 @@
 namespace FacturaScripts\Plugins\OpenServBus\Extension\Controller;
 
 use Closure;
-use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
+use FacturaScripts\Core\Where;
 
 class EditUser
 {
     public function createViews(): Closure
     {
         return function () {
-            $this->addListView('ListAdvertismentUser', 'AdvertismentUser', 'Avisos', 'fas fa-exclamation-triangle');
+            $this->addListView('ListAdvertismentUser', 'AdvertismentUser', 'Avisos', 'fa-solid fa-exclamation-triangle');
         };
     }
 
@@ -37,7 +37,7 @@ class EditUser
         return function ($viewName, $view) {
             if ($viewName === 'ListAdvertismentUser') {
                 $mvn = $this->getMainViewName();
-                $where = [new DataBaseWhere('nick', $this->getViewModelValue($mvn, 'nick'))];
+                $where = [Where::column('nick', $this->getViewModelValue($mvn, 'nick'))];
                 $view->loadData('', $where);
             }
         };

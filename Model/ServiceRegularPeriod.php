@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,14 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
 
-class ServiceRegularPeriod extends Base\ModelClass
+class ServiceRegularPeriod extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     /** @var bool */
@@ -79,11 +81,11 @@ class ServiceRegularPeriod extends Base\ModelClass
     /** @var string */
     public $usermodificacion;
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->activo = true;
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->fechaalta = Tools::date();
         $this->salida_desde_nave_sn = false;
         $this->useralta = Session::get('user')->nick ?? null;
     }
@@ -101,7 +103,7 @@ class ServiceRegularPeriod extends Base\ModelClass
     public function getServicioRegular(): ServiceRegular
     {
         $servicioRegular = new ServiceRegular();
-        $servicioRegular->loadFromCode($this->idservice_regular);
+        $servicioRegular->load($this->idservice_regular);
         return $servicioRegular;
     }
 
@@ -139,7 +141,7 @@ class ServiceRegularPeriod extends Base\ModelClass
 
         // La fecha de inicio es obligatoria
         if (empty($this->fecha_desde)) {
-            $this->toolBox()->i18nLog()->error('date-start-is-required');
+            Tools::log()->error('date-start-is-required');
             return false;
         }
 
@@ -147,20 +149,20 @@ class ServiceRegularPeriod extends Base\ModelClass
         if (!empty($this->fecha_hasta)) {
             if (!empty($this->fecha_desde) and
                 $this->fecha_desde > $this->fecha_hasta) {
-                $this->toolBox()->i18nLog()->error('date-start-not-greater-date-end');
+                Tools::log()->error('date-start-not-greater-date-end');
                 return false;
             }
         }
 
         // La hora de inicio es obligatoria
         if (empty($this->hora_desde)) {
-            $this->toolBox()->i18nLog()->error('hour-start-is-required');
+            Tools::log()->error('hour-start-is-required');
             return false;
         }
 
         // La hora de fin es obligatoria
         if (empty($this->hora_hasta)) {
-            $this->toolBox()->i18nLog()->error('hour-end-is-required');
+            Tools::log()->error('hour-end-is-required');
             return false;
         }
 
@@ -168,14 +170,13 @@ class ServiceRegularPeriod extends Base\ModelClass
         if (!empty($this->hora_hasta)) {
             if (!empty($this->hora_desde) &&
                 $this->hora_desde > $this->hora_hasta) {
-                $this->toolBox()->i18nLog()->error('hour-start-not-greater-hour-end.');
+                Tools::log()->error('hour-start-not-greater-hour-end.');
                 return false;
             }
         }
-
-        $utils = $this->toolBox()->utils();
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
+        
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
         return parent::test();
     }
 
@@ -184,7 +185,7 @@ class ServiceRegularPeriod extends Base\ModelClass
         return parent::url($type, $list . '?activetab=List');
     }
 
-    protected function actualizarPeriodoEnServicioRegular()
+    protected function actualizarPeriodoEnServicioRegular(): void
     {
         $sql = ' SELECT service_regular_periods.idservice_regular_period '
             . ' , service_regular_periods.fecha_desde '
@@ -244,7 +245,7 @@ class ServiceRegularPeriod extends Base\ModelClass
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
-        return parent::saveUpdate($values);
+        $this->fechamodificacion = Tools::date();
+        return parent::saveUpdate();
     }
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,13 +20,15 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Model\Impuesto;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
 
-class ServiceValuation extends Base\ModelClass
+class ServiceValuation extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     /** @var bool */
@@ -77,11 +79,11 @@ class ServiceValuation extends Base\ModelClass
     /** @var string */
     public $usermodificacion;
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->activo = true;
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->fechaalta = Tools::date();
         $this->importe = 0;
         $this->useralta = Session::get('user')->nick ?? null;
     }
@@ -99,7 +101,7 @@ class ServiceValuation extends Base\ModelClass
     public function getService(): Service
     {
         $service = new Service();
-        $service->loadFromCode($this->idservice);
+        $service->load($this->idservice);
         return $service;
     }
 
@@ -128,7 +130,7 @@ class ServiceValuation extends Base\ModelClass
         }
 
         if (empty($this->idservice)) {
-            $this->toolBox()->i18nLog()->error('assign-service-this-itinerary');
+            Tools::log()->error('assign-service-this-itinerary');
             return false;
         }
 
@@ -137,11 +139,10 @@ class ServiceValuation extends Base\ModelClass
         }
 
         $this->comprobarOrden();
-
-        $utils = $this->toolBox()->utils();
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
-        $this->nombre = $utils->noHtml($this->nombre);
+        
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
+        $this->nombre = Tools::noHtml($this->nombre);
         return parent::test();
     }
 
@@ -150,7 +151,7 @@ class ServiceValuation extends Base\ModelClass
         return parent::url($type, $list . '?activetab=List');
     }
 
-    protected function actualizar_Importes()
+    protected function actualizar_Importes(): void
     {
         $sql = " UPDATE services "
             . " SET services.importe = ( SELECT SUM(service_valuations.importe) "
@@ -177,7 +178,7 @@ class ServiceValuation extends Base\ModelClass
         }
 
         if (empty($this->idservice_valuation_type)) {
-            $this->toolBox()->i18nLog()->error('complete-to-description');
+            Tools::log()->error('complete-to-description');
             return false;
         }
 
@@ -193,7 +194,7 @@ class ServiceValuation extends Base\ModelClass
         return true;
     }
 
-    protected function comprobarOrden()
+    protected function comprobarOrden(): void
     {
         if (empty($this->orden)) {
             $sql = ' SELECT MAX(service_valuations.orden) AS orden '
@@ -215,7 +216,7 @@ class ServiceValuation extends Base\ModelClass
 
     protected function saveInsert(array $values = []): bool
     {
-        if (false === parent::saveInsert($values)) {
+        if (false === parent::saveInsert()) {
             return false;
         }
 
@@ -226,9 +227,9 @@ class ServiceValuation extends Base\ModelClass
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
+        $this->fechamodificacion = Tools::date();
 
-        if (false === parent::saveUpdate($values)) {
+        if (false === parent::saveUpdate()) {
             return false;
         }
 

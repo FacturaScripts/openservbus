@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,14 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
 
-class FuelKm extends Base\ModelClass
+class FuelKm extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     /** @var bool */
@@ -100,11 +102,11 @@ class FuelKm extends Base\ModelClass
     /** @var string */
     public $usermodificacion;
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->activo = true;
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->fechaalta = Tools::date();
         $this->useralta = Session::get('user')->nick ?? null;
     }
 
@@ -149,13 +151,13 @@ class FuelKm extends Base\ModelClass
 
         $this->comprobarEmpresa();
 
-        $utils = $this->toolBox()->utils();
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
+        
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
         return parent::test();
     }
 
-    protected function comprobarEmpresa()
+    protected function comprobarEmpresa(): void
     {
         // Comprobamos la empresa del empleado o del conductor
         if (!empty($this->idemployee)) {
@@ -183,7 +185,7 @@ class FuelKm extends Base\ModelClass
         if (!empty($this->idempresa)) {
             if (!empty($idempresa)) {
                 if ($idempresa <> $this->idempresa) {
-                    $this->toolBox()->i18nLog()->info('company-not-equals-company-of-driver', ['%company%' => $nombreEmpresa]);
+                    Tools::log()->info('company-not-equals-company-of-driver', ['%company%' => $nombreEmpresa]);
                 }
             }
         }
@@ -206,7 +208,7 @@ class FuelKm extends Base\ModelClass
             if (!empty($this->idempresa)) {
                 if (!empty($idempresa)) {
                     if ($idempresa <> $this->idempresa) {
-                        $this->toolBox()->i18nLog()->info('company-not-equals-company-of-vehicle', ['%company%' => $nombreEmpresa]);
+                        Tools::log()->info('company-not-equals-company-of-vehicle', ['%company%' => $nombreEmpresa]);
                     }
                 }
             }
@@ -217,12 +219,12 @@ class FuelKm extends Base\ModelClass
     {
         // Exigimos que se introduzca iddriver o idemployee
         if ((empty($this->iddriver)) && (empty($this->idemployee))) {
-            $this->toolBox()->i18nLog()->error('confirm-refueling-done-employee-or-driver');
+            Tools::log()->error('confirm-refueling-done-employee-or-driver');
             return false;
         }
 
         if ((!empty($this->iddriver)) && (!empty($this->idemployee))) {
-            $this->toolBox()->i18nLog()->error('refueling-has-employee-or-driver-bat-not-both');
+            Tools::log()->error('refueling-has-employee-or-driver-bat-not-both');
             return false;
         }
 
@@ -233,12 +235,12 @@ class FuelKm extends Base\ModelClass
     {
         // Exigimos que se introduzca idempresa o idcollaborator
         if ((empty($this->idfuel_pump)) && (empty($this->codproveedor))) {
-            $this->toolBox()->i18nLog()->error('confirm-internal-or-external-refueling');
+            Tools::log()->error('confirm-internal-or-external-refueling');
             return false;
         }
 
         if ((!empty($this->idfuel_pump)) && (!empty($this->codproveedor))) {
-            $this->toolBox()->i18nLog()->error('internal-or-external-refueling-bat-not-both');
+            Tools::log()->error('internal-or-external-refueling-bat-not-both');
             return false;
         }
 
@@ -249,12 +251,12 @@ class FuelKm extends Base\ModelClass
     {
         // Exigimos que se introduzca idtarjeta o ididentification_mean
         if ((empty($this->idtarjeta)) && (empty($this->ididentification_mean))) {
-            $this->toolBox()->i18nLog()->error('confirm-card-used-this-refueling');
+            Tools::log()->error('confirm-card-used-this-refueling');
             return false;
         }
 
         if ((!empty($this->idtarjeta)) && (!empty($this->ididentification_mean))) {
-            $this->toolBox()->i18nLog()->error('refueling-use-card-or-identification-bat-not-both');
+            Tools::log()->error('refueling-use-card-or-identification-bat-not-both');
             return false;
         }
 
@@ -264,7 +266,7 @@ class FuelKm extends Base\ModelClass
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
-        return parent::saveUpdate($values);
+        $this->fechamodificacion = Tools::date();
+        return parent::saveUpdate();
     }
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@ class ListService extends ListController
         $pageData = parent::getPageData();
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'discretionary-services';
-        $pageData['icon'] = 'fas fa-book-reader';
+        $pageData['icon'] = 'fa-solid fa-book-reader';
         return $pageData;
     }
 
@@ -42,9 +42,9 @@ class ListService extends ListController
         $this->createViewStop();
     }
 
-    protected function createViewService($viewName = 'ListService')
+    protected function createViewService($viewName = 'ListService'): void
     {
-        $this->addView($viewName, 'Service', 'services', 'fas fa-book-reader');
+        $this->addView($viewName, 'Service', 'services', 'fa-solid fa-book-reader');
         $this->addSearchFields($viewName, ['idservicio', 'nombre']);
         $this->addOrderBy($viewName, ['nombre'], 'name', 1);
         $this->addOrderBy($viewName, ['idservicio'], 'code');
@@ -78,9 +78,9 @@ class ListService extends ListController
         $this->addFilterPeriod($viewName, 'porFechaFin', 'date-end', 'fecha_hasta');
     }
 
-    protected function createViewServiceItinerary($viewName = 'ListServiceItinerary')
+    protected function createViewServiceItinerary($viewName = 'ListServiceItinerary'): void
     {
-        $this->addView($viewName, 'ServiceItinerary', 'serv-discretionary-itinerary', 'fas fa-road');
+        $this->addView($viewName, 'ServiceItinerary', 'serv-discretionary-itinerary', 'fa-solid fa-road');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['idservice', 'orden'], 'by-itinerary', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -95,9 +95,9 @@ class ListService extends ListController
         $this->addFilterAutocomplete($viewName, 'xIdservice', 'service-discretionary', 'idservice', 'services', 'idservice', 'nombre');
     }
 
-    protected function createViewServiceValuation($viewName = 'ListServiceValuation')
+    protected function createViewServiceValuation($viewName = 'ListServiceValuation'): void
     {
-        $this->addView($viewName, 'ServiceValuation', 'ratings', 'fas fa-dollar-sign');
+        $this->addView($viewName, 'ServiceValuation', 'ratings', 'fa-solid fa-dollar-sign');
         $this->views[$viewName]->addOrderBy(['idservice', 'orden'], 'by-rating', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
@@ -112,9 +112,9 @@ class ListService extends ListController
         $this->views[$viewName]->addFilterAutocomplete('xIdservice_valuation_type', 'concepts-valuation', 'idservice_valuation_type', 'service_valuation_types', 'idservice_valuation_type', 'nombre');
     }
 
-    protected function createViewServiceValuationType($viewName = 'ListServiceValuationType')
+    protected function createViewServiceValuationType($viewName = 'ListServiceValuationType'): void
     {
-        $this->addView($viewName, 'ServiceValuationType', 'concepts-valuations', 'fas fa-hand-holding-usd');
+        $this->addView($viewName, 'ServiceValuationType', 'concepts-valuations', 'fa-solid fa-hand-holding-usd');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['nombre'], 'name', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -127,9 +127,9 @@ class ListService extends ListController
         $this->addFilterSelect($viewName, 'soloActivos', 'active-all', 'activo', $activo);
     }
 
-    protected function createViewStop($viewName = 'ListStop')
+    protected function createViewStop($viewName = 'ListStop'): void
     {
-        $this->addView($viewName, 'Stop', 'stops', 'fas fa-stopwatch');
+        $this->addView($viewName, 'Stop', 'stops', 'fa-solid fa-stopwatch');
         $this->addSearchFields($viewName, ['nombre', 'ciudad', 'provincia', 'codpostal', 'direccion']);
         $this->addOrderBy($viewName, ['nombre'], 'name', 1);
         $this->addOrderBy($viewName, ['provincia', 'ciudad', 'codpostal', 'direccion'], 'province-city-postal-code-address');

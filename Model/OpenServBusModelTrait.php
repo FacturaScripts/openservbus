@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Tools;
 
 trait OpenServBusModelTrait
 {
@@ -35,11 +36,11 @@ trait OpenServBusModelTrait
             return true;
         }
 
-        $this->fechabaja = date(static::DATETIME_STYLE);
+        $this->fechabaja = Tools::date();
         $this->userbaja = Session::get('user')->nick ?? null;
 
         if (empty($this->motivobaja)) {
-            $this->toolBox()->i18nLog()->error('record-is-not-active-specify-reason');
+            Tools::log()->error('record-is-not-active-specify-reason');
             return false;
         }
 

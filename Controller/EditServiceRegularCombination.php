@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
-use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Core\Lib\ExtendedController\EditController;
+use FacturaScripts\Core\Where;
 use FacturaScripts\Plugins\OpenServBus\Model\Driver;
 
 class EditServiceRegularCombination extends EditController
@@ -37,7 +37,7 @@ class EditServiceRegularCombination extends EditController
         $pageData['showonmenu'] = false;
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'serv-regular-combination';
-        $pageData['icon'] = 'fas fa-briefcase';
+        $pageData['icon'] = 'fa-solid fa-briefcase';
         return $pageData;
     }
 
@@ -48,9 +48,9 @@ class EditServiceRegularCombination extends EditController
         $this->setTabsPosition('top');
     }
 
-    protected function createViewServiceRegularCombination_serv($viewName = 'ListServiceRegularCombinationServ')
+    protected function createViewServiceRegularCombination_serv($viewName = 'ListServiceRegularCombinationServ'): void
     {
-        $this->addListView($viewName, 'ServiceRegularCombinationServ', 'services', 'fas fa-cogs');
+        $this->addListView($viewName, 'ServiceRegularCombinationServ', 'services', 'fa-solid fa-cogs');
         $this->views[$viewName]->addOrderBy(['idservice_regular_combination', 'idservice_regular'], 'name', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
@@ -71,7 +71,7 @@ class EditServiceRegularCombination extends EditController
         switch ($viewName) {
             case 'ListServiceRegularCombinationServ':
                 $idservice_regular_combination = $this->getViewModelValue($mvn, 'idservice_regular_combination');
-                $where = [new DatabaseWhere('idservice_regular_combination', $idservice_regular_combination)];
+                $where = [Where::column('idservice_regular_combination', $idservice_regular_combination)];
                 $view->loadData('', $where);
                 break;
 
@@ -88,7 +88,7 @@ class EditServiceRegularCombination extends EditController
         }
     }
 
-    protected function loadValuesSelectDrivers(string $mvn, string $columnName)
+    protected function loadValuesSelectDrivers(string $mvn, string $columnName): void
     {
         $column = $this->views[$mvn]->columnForName($columnName);
         if($column && $column->widget->getType() === 'select') {

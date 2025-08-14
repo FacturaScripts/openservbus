@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@ class EditHelper extends EditController
         $pageData['showonmenu'] = false;
         $pageData['menu'] = 'Archivos';
         $pageData['title'] = 'helper';
-        $pageData['icon'] = 'fas fa-user-graduate';
+        $pageData['icon'] = 'fa-solid fa-user-graduate';
         return $pageData;
     }
 
@@ -55,7 +55,7 @@ class EditHelper extends EditController
         }
     }
 
-    protected function loadValuesSelectCollaborators(string $mvn)
+    protected function loadValuesSelectCollaborators(string $mvn): void
     {
         $column = $this->views[$mvn]->columnForName('collaborator');
         if($column && $column->widget->getType() === 'select') {

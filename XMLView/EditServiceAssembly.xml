@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,45 +21,45 @@
     <columns>
         <group name="data" numcolumns="12">
             <column name="code1" title="code" numcolumns="2" order="100">
-                <widget type="text" fieldname="cod_servicio" icon="fas fa-hashtag" maxlength="20" readonly="true"/>
+                <widget type="text" fieldname="cod_servicio" icon="fa-solid fa-hashtag" maxlength="20" readonly="true"/>
             </column>
             <column name="code2" title="code" numcolumns="2" order="110">
-                <widget type="text" fieldname="idservice" icon="fas fa-hashtag" maxlength="20" readonly="true"/>
+                <widget type="text" fieldname="idservice" icon="fa-solid fa-hashtag" maxlength="20" readonly="true"/>
             </column>
             <column name="service-regular" numcolumns="4" order="120">
-                <widget type="select" fieldname="idservice_regular" icon="fas fa-book-open"
+                <widget type="select" fieldname="idservice_regular" icon="fa-solid fa-book-open"
                         onclick="EditServiceRegular" readonly="true">
                     <values source="service_regulars" fieldcode="idservice_regular" fieldtitle="nombre"/>
                 </widget>
             </column>
             <column name="service-discretionary" numcolumns="4" order="130">
-                <widget type="select" fieldname="idservice" icon="fas fa-book-reader" onclick="EditService"
+                <widget type="select" fieldname="idservice" icon="fa-solid fa-book-reader" onclick="EditService"
                         readonly="true">
                     <values source="services" fieldcode="idservice" fieldtitle="nombre"/>
                 </widget>
             </column>
             <column name="seats" numcolumns="2" order="140">
-                <widget type="text" fieldname="plazas" icon="fas fa-chair"/>
+                <widget type="text" fieldname="plazas" icon="fa-solid fa-chair"/>
             </column>
         </group>
         <group name="cliente-tipovehiculo-monitor" numcolumns="12">
             <column name="client" numcolumns="4" order="100">
-                <widget type="select" fieldname="codcliente" icon="fas fa-users" onclick="EditCliente" readonly="true">
+                <widget type="select" fieldname="codcliente" icon="fa-solid fa-users" onclick="EditCliente" readonly="true">
                     <values source="clientes" fieldcode="codcliente" fieldtitle="nombre"/>
                 </widget>
             </column>
             <column name="vehicle-type" numcolumns="4" order="110">
-                <widget type="select" fieldname="idvehicle_type" icon="fas fa-tractor" onclick="EditVehicleType">
+                <widget type="select" fieldname="idvehicle_type" icon="fa-solid fa-tractor" onclick="EditVehicleType">
                     <values source="vehicle_types" fieldcode="idvehicle_type" fieldtitle="nombre"/>
                 </widget>
             </column>
             <column name="helper" numcolumns="4" order="120">
-                <widget type="select" fieldname="idhelper" icon="fas fa-user-graduate" onclick="EditHelper">
+                <widget type="select" fieldname="idhelper" icon="fa-solid fa-user-graduate" onclick="EditHelper">
                     <values/>
                 </widget>
             </column>
         </group>
-        <group name="book-roadmap" numcolumns="12" icon="fas fa-atlas" title="book-roadmap" valign="bottom">
+        <group name="book-roadmap" numcolumns="12" icon="fa-solid fa-atlas" title="book-roadmap" valign="bottom">
             <column name="the-origin" numcolumns="4" order="100">
                 <widget type="text" fieldname="hoja_ruta_origen" maxlength="100"/>
             </column>
@@ -85,17 +85,17 @@
                 </widget>
             </column>
             <column name="fiscal-number" numcolumns="2" order="170">
-                <widget type="text" fieldname="hoja_ruta_cifnif" maxlength="30" icon="fas fa-id-card"/>
+                <widget type="text" fieldname="hoja_ruta_cifnif" maxlength="30" icon="fa-solid fa-id-card"/>
             </column>
             <column name="service-type" numcolumns="4" order="180">
-                <widget type="select" fieldname="idservice_type" icon="fas fa-dolly" onclick="EditServiceType">
+                <widget type="select" fieldname="idservice_type" icon="fa-solid fa-dolly" onclick="EditServiceType">
                     <values source="service_types" fieldcode="idservice_type" fieldtitle="nombre"/>
                 </widget>
             </column>
         </group>
-        <group name="billing" numcolumns="12" icon="fas fa-file-invoice-dollar" title="billing" valign="bottom">
+        <group name="billing" numcolumns="12" icon="fa-solid fa-file-invoice-dollar" title="billing" valign="bottom">
             <column name="company" titleurl="ListEmpresa" numcolumns="4" order="100">
-                <widget type="select" fieldname="idempresa" icon="fas fa-building" onclick="EditEmpresa">
+                <widget type="select" fieldname="idempresa" icon="fa-solid fa-building" onclick="EditEmpresa">
                     <values source="empresas" fieldcode="idempresa" fieldtitle="nombrecorto"/>
                 </widget>
             </column>
@@ -112,7 +112,7 @@
                 <widget type="text" fieldname="facturar_agrupando_text" readonly="true"/>
             </column>
             <column name="number-bill" titleurl="ListFacturaCliente" numcolumns="3" order="150">
-                <widget type="select" fieldname="idfactura" icon="fas fa-copy" onclick="EditFacturaCliente"
+                <widget type="select" fieldname="idfactura" icon="fa-solid fa-copy" onclick="EditFacturaCliente"
                         readonly="true">
                     <values source="facturascli" fieldcode="idfactura" fieldtitle="codigo"/>
                 </widget>
@@ -123,7 +123,7 @@
                 <widget type="number" decimal="3" fieldname="importe"/>
             </column>
             <column name="codimpuesto" title="applied-tax" titleurl="ListImpuesto" numcolumns="6" order="110">
-                <widget type="select" fieldname="codimpuesto" icon="fas fa-plus-square" onclick="EditImpuesto">
+                <widget type="select" fieldname="codimpuesto" icon="fa-solid fa-plus-square" onclick="EditImpuesto">
                     <values source="impuestos" fieldcode="codimpuesto" fieldtitle="descripcion"/>
                 </widget>
             </column>
@@ -134,7 +134,7 @@
             </column>
             <column name="codimpuesto_enextranjero" title="applied-tax" titleurl="ListImpuesto" numcolumns="6"
                     order="110">
-                <widget type="select" fieldname="codimpuesto_enextranjero" icon="fas fa-plus-square"
+                <widget type="select" fieldname="codimpuesto_enextranjero" icon="fa-solid fa-plus-square"
                         onclick="EditImpuesto">
                     <values source="impuestos" fieldcode="codimpuesto" fieldtitle="descripcion"/>
                 </widget>
@@ -145,21 +145,21 @@
                 <widget type="number" decimal="2" fieldname="total" readonly="true"/>
             </column>
         </group>
-        <group name="subaccount-sales" numcolumns="12" icon="fas fa-th-list" title="subaccount-sales">
+        <group name="subaccount-sales" numcolumns="12" icon="fa-solid fa-th-list" title="subaccount-sales">
             <column name="for-kms-national" numcolumns="6" order="100">
-                <widget type="autocomplete" fieldname="codsubcuenta_km_nacional" icon="fas fa-th-list"
+                <widget type="autocomplete" fieldname="codsubcuenta_km_nacional" icon="fa-solid fa-th-list"
                         onclick="EditSubcuenta">
                     <values source="subcuentas" fieldcode="codsubcuenta" fieldtitle="descripcion"/>
                 </widget>
             </column>
             <column name="for-kms-anotherCountry" numcolumns="6" order="110">
-                <widget type="autocomplete" fieldname="codsubcuenta_km_extranjero" icon="fas fa-th-list"
+                <widget type="autocomplete" fieldname="codsubcuenta_km_extranjero" icon="fa-solid fa-th-list"
                         onclick="EditSubcuenta">
                     <values source="subcuentas" fieldcode="codsubcuenta" fieldtitle="descripcion"/>
                 </widget>
             </column>
         </group>
-        <group name="assembly-services" numcolumns="5" icon="fas fa-business-time" title="assembly-services" valign="bottom">
+        <group name="assembly-services" numcolumns="5" icon="fa-solid fa-business-time" title="assembly-services" valign="bottom">
             <column name="inicio_horaAnt" title="anticipation-hour" numcolumns="4" order="100">
                 <widget type="time" fieldname="hora_anticipacion"/>
             </column>
@@ -187,14 +187,14 @@
         </group>
         <group name="assembly-services-2-5" numcolumns="12">
             <column name="vehicle" numcolumns="7" order="100">
-                <widget type="select" fieldname="idvehicle" icon="fas fa-bus-alt" onclick="EditVehicle">
+                <widget type="select" fieldname="idvehicle" icon="fa-solid fa-bus-alt" onclick="EditVehicle">
                     <values source="vehicles" fieldcode="idvehicle" fieldtitle="nombre"/>
                 </widget>
             </column>
         </group>
         <group name="assembly-services-3-1" numcolumns="12">
             <column name="driver-1" numcolumns="4" order="100">
-                <widget type="select" fieldname="iddriver_1" icon="fas fa-user-astronaut" onclick="EditDriver">
+                <widget type="select" fieldname="iddriver_1" icon="fa-solid fa-user-astronaut" onclick="EditDriver">
                     <values/>
                 </widget>
             </column>
@@ -213,7 +213,7 @@
         </group>
         <group name="assembly-services-3-2" numcolumns="12">
             <column name="driver-2" numcolumns="4" order="100">
-                <widget type="select" fieldname="iddriver_2" icon="fas fa-user-astronaut" onclick="EditDriver">
+                <widget type="select" fieldname="iddriver_2" icon="fa-solid fa-user-astronaut" onclick="EditDriver">
                     <values/>
                 </widget>
             </column>
@@ -232,7 +232,7 @@
         </group>
         <group name="assembly-services-3-3" numcolumns="12">
             <column name="driver-3" numcolumns="4" order="100">
-                <widget type="select" fieldname="iddriver_3" icon="fas fa-user-astronaut" onclick="EditDriver">
+                <widget type="select" fieldname="iddriver_3" icon="fa-solid fa-user-astronaut" onclick="EditDriver">
                     <values/>
                 </widget>
             </column>
@@ -249,7 +249,7 @@
                 <widget type="textarea" fieldname="driver_observaciones_3"/>
             </column>
         </group>
-        <group name="observations" numcolumns="12" icon="fas fa-info-circle" title="observations">
+        <group name="observations" numcolumns="12" icon="fa-solid fa-info-circle" title="observations">
             <column name="observations-general" numcolumns="12" order="100">
                 <widget type="textarea" fieldname="observaciones"/>
             </column>
@@ -269,7 +269,7 @@
                 <widget type="textarea" fieldname="observaciones_liquidacion"/>
             </column>
         </group>
-        <group name="record-status" numcolumns="12" icon="fas fa-cog" title="Estado del registro">
+        <group name="record-status" numcolumns="12" icon="fa-solid fa-cog" title="Estado del registro">
             <column name="active" numcolums="2" order="100">
                 <widget type="checkbox" fieldname="activo"/>
             </column>
@@ -282,19 +282,19 @@
                 <widget type="datetime" fieldname="fechaalta" readonly="true"/>
             </column>
             <column name="created-by" numcolumns="9" order="110">
-                <widget type="text" icon="fas fa-user-circle" fieldname="useralta" readonly="true"/>
+                <widget type="text" icon="fa-solid fa-user-circle" fieldname="useralta" readonly="true"/>
             </column>
             <column name="modification-date" numcolumns="3" order="120">
                 <widget type="datetime" fieldname="fechamodificacion" readonly="true"/>
             </column>
             <column name="modified-by" numcolumns="9" order="130">
-                <widget type="text" icon="fas fa-user-circle" fieldname="usermodificacion" readonly="true"/>
+                <widget type="text" icon="fa-solid fa-user-circle" fieldname="usermodificacion" readonly="true"/>
             </column>
             <column name="deletion-date" numcolumns="3" order="140">
                 <widget type="datetime" fieldname="fechabaja" readonly="true"/>
             </column>
             <column name="deleted-by" numcolumns="9" order="150">
-                <widget type="text" icon="fas fa-user-circle" fieldname="userbaja" readonly="true"/>
+                <widget type="text" icon="fa-solid fa-user-circle" fieldname="userbaja" readonly="true"/>
             </column>
             <column name="deleted-motif" description="only-fill-inactive-record" numcolumns="12" order="160">
                 <widget type="text" fieldname="motivobaja" maxlength="100"/>

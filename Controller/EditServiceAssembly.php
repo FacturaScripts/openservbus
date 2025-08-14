@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
-use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Core\Lib\ExtendedController\EditController;
+use FacturaScripts\Core\Where;
 use FacturaScripts\Plugins\OpenServBus\Model\Driver;
 use FacturaScripts\Plugins\OpenServBus\Model\Helper;
 
@@ -39,7 +39,7 @@ class EditServiceAssembly extends EditController
         $pageData['showonmenu'] = false;
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'assembly-of-services';
-        $pageData['icon'] = 'fas fa-business-time';
+        $pageData['icon'] = 'fa-solid fa-business-time';
         return $pageData;
     }
 
@@ -50,13 +50,13 @@ class EditServiceAssembly extends EditController
         $this->setTabsPosition('top');
     }
 
-    protected function createViewContacts(string $viewName = 'EditDireccionContacto')
+    protected function createViewContacts(string $viewName = 'EditDireccionContacto'): void
     {
-        $this->addEditListView($viewName, 'Contacto', 'addresses-and-contacts', 'fas fa-address-book');
+        $this->addEditListView($viewName, 'Contacto', 'addresses-and-contacts', 'fa-solid fa-address-book');
         $this->views[$viewName]->setInLine(true);
     }
 
-    protected function displayOnlyFieldsForDiscretionalServ($viewName)
+    protected function displayOnlyFieldsForDiscretionalServ($viewName): void
     {
         // Es un discrecional, por lo que se ponen invisibles estos campos
         $this->displayNoneField($viewName, 'cod_servicio');
@@ -67,7 +67,7 @@ class EditServiceAssembly extends EditController
         $this->displayNoneField($viewName, 'activo');
     }
 
-    protected function displayOnlyFieldsForRegularServ($viewName)
+    protected function displayOnlyFieldsForRegularServ($viewName): void
     {
         // Es un regular, por lo que se ponen invisibles estos campos
         $this->displayNoneField($viewName, 'idservice');
@@ -78,7 +78,7 @@ class EditServiceAssembly extends EditController
         $this->displayNoneField($viewName, 'activo_text');
     }
 
-    protected function displayNoneField($viewName, $fieldName)
+    protected function displayNoneField($viewName, $fieldName): void
     {
         $column = $this->views[$viewName]->columnForField($fieldName);
         $column->display = 'none';
@@ -90,7 +90,7 @@ class EditServiceAssembly extends EditController
         switch ($viewName) {
             case 'EditDireccionContacto':
                 $codcliente = $this->getViewModelValue('EditService_assembly', 'codcliente');
-                $where = [new DatabaseWhere('codcliente', $codcliente)];
+                $where = [Where::column('codcliente', $codcliente)];
                 $view->loadData('', $where);
                 break;
 
@@ -109,7 +109,7 @@ class EditServiceAssembly extends EditController
         }
     }
 
-    protected function loadValuesSelectDrivers(string $mvn, string $columnName)
+    protected function loadValuesSelectDrivers(string $mvn, string $columnName): void
     {
         $column = $this->views[$mvn]->columnForName($columnName);
         if($column && $column->widget->getType() === 'select') {
@@ -126,7 +126,7 @@ class EditServiceAssembly extends EditController
         }
     }
 
-    protected function loadValuesSelectHelpers(string $mvn)
+    protected function loadValuesSelectHelpers(string $mvn): void
     {
         $column = $this->views[$mvn]->columnForName('helper');
         if($column && $column->widget->getType() === 'select') {
@@ -143,7 +143,7 @@ class EditServiceAssembly extends EditController
         }
     }
 
-    protected function readOnlyAllCommonFields($viewName)
+    protected function readOnlyAllCommonFields($viewName): void
     {
         // Los campos comunes entre discrecionales y regulares = true ... esto se
         // hará siempre que sea un discrecional sin facturar. En regulares sin facturar no
@@ -189,13 +189,13 @@ class EditServiceAssembly extends EditController
         $this->readOnlyField($viewName, 'idhelper');
     }
 
-    protected function readOnlyField($viewName, $fieldName)
+    protected function readOnlyField($viewName, $fieldName): void
     {
         $column = $this->views[$viewName]->columnForField($fieldName);
         $column->widget->readonly = 'true';
     }
 
-    protected function readOnlyFields($viewName)
+    protected function readOnlyFields($viewName): void
     {
         if (!empty($this->views[$viewName]->model->idfactura)) { // Está facturado el servicio
             $this->readOnlyAllCommonFields($viewName); // Da igual que sea discrecional o no, los campos comunes a readonly=true

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,14 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
 
-class Vehicle extends Base\ModelClass
+class Vehicle extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     /** @var bool */
@@ -121,11 +123,11 @@ class Vehicle extends Base\ModelClass
     /** @var string */
     public $usermodificacion;
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->activo = true;
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->fechaalta = Tools::date();
         $this->km_actuales = 0;
         $this->useralta = Session::get('user')->nick ?? null;
     }
@@ -157,7 +159,7 @@ class Vehicle extends Base\ModelClass
 
         // Comprobamos que el código se ha introducido correctamente
         if (!empty($this->cod_vehicle) && 1 !== \preg_match('/^[A-Z0-9_\+\.\-]{1,10}$/i', $this->cod_vehicle)) {
-            $this->toolBox()->i18nLog()->error(
+            Tools::log()->error(
                 'invalid-alphanumeric-code',
                 ['%value%' => $this->cod_vehicle, '%column%' => 'cod_vehicle', '%min%' => '1', '%max%' => '10']
             );
@@ -166,12 +168,12 @@ class Vehicle extends Base\ModelClass
 
         // Exigimos que se introduzca idempresa o idcollaborator
         if ((empty($this->idempresa)) && (empty($this->idcollaborator))) {
-            $this->toolBox()->i18nLog()->error('confirm-vehicle-is-collaboratin-or-our');
+            Tools::log()->error('confirm-vehicle-is-collaboratin-or-our');
             return false;
         }
 
         if ((!empty($this->idempresa)) && (!empty($this->idcollaborator))) {
-            $this->toolBox()->i18nLog()->error('the-vehicle-is-collaboratin-or-our-bat-not-both');
+            Tools::log()->error('the-vehicle-is-collaboratin-or-our-bat-not-both');
             return false;
         }
 
@@ -179,30 +181,29 @@ class Vehicle extends Base\ModelClass
         // Fecha Matriculacion Actual = Fecha Matriculación Primera
         if (empty($this->fecha_matriculacion_actual)) {
             if (!empty($this->fecha_matriculacion_primera)) {
-                $this->toolBox()->i18nLog()->info('current-registration-date-is-empty');
+                Tools::log()->info('current-registration-date-is-empty');
                 $this->fecha_matriculacion_actual = $this->fecha_matriculacion_primera;
             }
         }
 
-        $utils = $this->toolBox()->utils();
-        $this->cod_vehicle = $utils->noHtml($this->cod_vehicle);
-        $this->nombre = $utils->noHtml($this->nombre);
-        $this->matricula = $utils->noHtml($this->matricula);
-        $this->motor_chasis = $utils->noHtml($this->motor_chasis);
-        $this->numero_bastidor = $utils->noHtml($this->numero_bastidor);
-        $this->carroceria = $utils->noHtml($this->carroceria);
-        $this->numero_obra = $utils->noHtml($this->numero_obra);
-        $this->plazas_segun_ficha_tecnica = $utils->noHtml($this->plazas_segun_ficha_tecnica);
-        $this->configuraciones_especiales = $utils->noHtml($this->configuraciones_especiales);
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
+        $this->cod_vehicle = Tools::noHtml($this->cod_vehicle);
+        $this->nombre = Tools::noHtml($this->nombre);
+        $this->matricula = Tools::noHtml($this->matricula);
+        $this->motor_chasis = Tools::noHtml($this->motor_chasis);
+        $this->numero_bastidor = Tools::noHtml($this->numero_bastidor);
+        $this->carroceria = Tools::noHtml($this->carroceria);
+        $this->numero_obra = Tools::noHtml($this->numero_obra);
+        $this->plazas_segun_ficha_tecnica = Tools::noHtml($this->plazas_segun_ficha_tecnica);
+        $this->configuraciones_especiales = Tools::noHtml($this->configuraciones_especiales);
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
         return parent::test();
     }
 
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
-        return parent::saveUpdate($values);
+        $this->fechamodificacion = Tools::date();
+        return parent::saveUpdate();
     }
 }

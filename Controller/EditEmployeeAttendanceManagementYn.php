@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@ class EditEmployeeAttendanceManagementYn extends EditController
         $pageData['showonmenu'] = false;
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'obliged-on-site-control';
-        $pageData['icon'] = 'fas fa-business-time';
+        $pageData['icon'] = 'fa-solid fa-business-time';
         return $pageData;
     }
 }

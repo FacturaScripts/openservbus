@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@ class ListVehicle extends ListController
         $pageData = parent::getPageData();
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'vehicles';
-        $pageData['icon'] = 'fas fa-bus-alt';
+        $pageData['icon'] = 'fa-solid fa-bus-alt';
         return $pageData;
     }
 
@@ -39,9 +39,9 @@ class ListVehicle extends ListController
         $this->createViewVehicleEquipament();
     }
 
-    protected function createViewVehicle($viewName = 'ListVehicle')
+    protected function createViewVehicle($viewName = 'ListVehicle'): void
     {
-        $this->addView($viewName, 'Vehicle', 'vehicles', 'fas fa-bus-alt');
+        $this->addView($viewName, 'Vehicle', 'vehicles', 'fa-solid fa-bus-alt');
         $this->addSearchFields($viewName, ['cod_vehicle', 'name', 'matricula']);
         $this->addOrderBy($viewName, ['nombre'], 'Nombre', 1);
         $this->addOrderBy($viewName, ['cod_vehicle'], 'code');
@@ -64,9 +64,9 @@ class ListVehicle extends ListController
         $this->addFilterAutocomplete($viewName, 'xIdvehicle_type', 'vehicle-type', 'idvehicle_type', 'vehicle_types', 'idvehicle_type', 'nombre');
     }
 
-    protected function createViewVehicleEquipament($viewName = 'ListVehicleEquipament')
+    protected function createViewVehicleEquipament($viewName = 'ListVehicleEquipament'): void
     {
-        $this->addView($viewName, 'VehicleEquipament', 'equipament', 'fas fa-bus-alt');
+        $this->addView($viewName, 'VehicleEquipament', 'equipament', 'fa-solid fa-bus-alt');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['idvehicle', 'idvehicle_equipament_type'], 'vehicle-equipment-plus', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');

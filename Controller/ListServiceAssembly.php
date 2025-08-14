@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
 use FacturaScripts\Core\Lib\ExtendedController\ListController;
+use FacturaScripts\Core\Tools;
 
 class ListServiceAssembly extends ListController
 {
@@ -29,7 +30,7 @@ class ListServiceAssembly extends ListController
         $pageData = parent::getPageData();
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'assembly-of-services';
-        $pageData['icon'] = 'fas fa-business-time';
+        $pageData['icon'] = 'fa-solid fa-business-time';
         return $pageData;
     }
 
@@ -38,9 +39,9 @@ class ListServiceAssembly extends ListController
         $this->createViewAssembly();
     }
 
-    protected function createViewAssembly($viewName = 'ListServiceAssembly')
+    protected function createViewAssembly($viewName = 'ListServiceAssembly'): void
     {
-        $this->addView($viewName, 'ServiceAssembly', 'assembly-of-services', 'fas fa-business-time');
+        $this->addView($viewName, 'ServiceAssembly', 'assembly-of-services', 'fa-solid fa-business-time');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['nombre'], 'name');
         $this->addOrderBy($viewName, ['codcliente'], 'client');
@@ -93,7 +94,7 @@ class ListServiceAssembly extends ListController
 
         // Comprobamos si han introducido la fecha del montaje
         if (empty($form["date_assembly"])) {
-            $this->toolBox()->i18nLog()->warning('you-have-not-provided-the-assembly-date');
+            Tools::log()->warning('you-have-not-provided-the-assembly-date');
             return true;
         }
 
@@ -356,7 +357,7 @@ class ListServiceAssembly extends ListController
 
         $this->dataBase->exec($sql);
 
-        $this->toolBox()->i18nLog()->notice('items-added-correctly');
+        Tools::log()->notice('items-added-correctly');
         return true;
     }
 }

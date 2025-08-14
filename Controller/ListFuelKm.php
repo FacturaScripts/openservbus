@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@ class ListFuelKm extends ListController
         $pageData = parent::getPageData();
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'refueling-kms';
-        $pageData['icon'] = 'fas fa-gas-pump';
+        $pageData['icon'] = 'fa-solid fa-gas-pump';
         return $pageData;
     }
 
@@ -40,9 +40,9 @@ class ListFuelKm extends ListController
         $this->createViewFuel_pump();
     }
 
-    protected function createViewFuelKm($viewName = 'ListFuelKm')
+    protected function createViewFuelKm($viewName = 'ListFuelKm'): void
     {
-        $this->addView($viewName, 'FuelKm', 'refueling-kms', 'fas fa-gas-pump');
+        $this->addView($viewName, 'FuelKm', 'refueling-kms', 'fa-solid fa-gas-pump');
         $this->addOrderBy($viewName, ['fecha'], 'Fecha', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
@@ -69,9 +69,9 @@ class ListFuelKm extends ListController
         $this->addFilterSelect($viewName, 'esDepositoLleno', 'full-tank-all', 'deposito_lleno', $esDepositoLleno);
     }
 
-    protected function createViewFuel_pump($viewName = 'ListFuelPump')
+    protected function createViewFuel_pump($viewName = 'ListFuelPump'): void
     {
-        $this->addView($viewName, 'FuelPump', 'internal-spout', 'fas fa-thumbtack');
+        $this->addView($viewName, 'FuelPump', 'internal-spout', 'fa-solid fa-thumbtack');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['nombre'], 'name', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');

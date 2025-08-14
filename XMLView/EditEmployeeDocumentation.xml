@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,13 +24,13 @@
                 <widget type="text" fieldname="nombre" maxlength="100" required="true"/>
             </column>
             <column name="employee" titleurl="ListEmployeeOpen" numcolumns="3" order="110">
-                <widget type="select" fieldname="idemployee" icon="far fa-id-card" onclick="EditEmployeeOpen"
+                <widget type="select" fieldname="idemployee" icon="fa-regular fa-id-card" onclick="EditEmployeeOpen"
                         required="true">
                     <values source="employees_open" fieldcode="idemployee" fieldtitle="nombre"/>
                 </widget>
             </column>
             <column name="document-type" titleurl="ConfigOpenServBus?activetab=ListDocumentationType" numcolumns="3" order="120">
-                <widget type="select" fieldname="iddocumentation_type" icon="far fa-address-card"
+                <widget type="select" fieldname="iddocumentation_type" icon="fa-regular fa-address-card"
                         onclick="EditDocumentationType" required="true">
                     <values source="documentation_types" fieldcode="iddocumentation_type" fieldtitle="nombre"/>
                 </widget>
@@ -42,7 +42,7 @@
                 <widget type="textarea" fieldname="observaciones"/>
             </column>
         </group>
-        <group name="record-status" numcolumns="12" icon="fas fa-cog" title="Estado del registro">
+        <group name="record-status" numcolumns="12" icon="fa-solid fa-cog" title="Estado del registro">
             <column name="active" numcolums="12" order="100">
                 <widget type="checkbox" fieldname="activo"/>
             </column>
@@ -52,19 +52,19 @@
                 <widget type="datetime" fieldname="fechaalta" readonly="true"/>
             </column>
             <column name="created-by" numcolumns="9" order="110">
-                <widget type="text" icon="fas fa-user-circle" fieldname="useralta" readonly="true"/>
+                <widget type="text" icon="fa-solid fa-user-circle" fieldname="useralta" readonly="true"/>
             </column>
             <column name="modification-date" numcolumns="3" order="120">
                 <widget type="datetime" fieldname="fechamodificacion" readonly="true"/>
             </column>
             <column name="modified-by" numcolumns="9" order="130">
-                <widget type="text" icon="fas fa-user-circle" fieldname="usermodificacion" readonly="true"/>
+                <widget type="text" icon="fa-solid fa-user-circle" fieldname="usermodificacion" readonly="true"/>
             </column>
             <column name="deletion-date" numcolumns="3" order="140">
                 <widget type="datetime" fieldname="fechabaja" readonly="true"/>
             </column>
             <column name="deleted-by" numcolumns="9" order="150">
-                <widget type="text" icon="fas fa-user-circle" fieldname="userbaja" readonly="true"/>
+                <widget type="text" icon="fa-solid fa-user-circle" fieldname="userbaja" readonly="true"/>
             </column>
             <column name="deleted-motif" description="only-fill-inactive-record" numcolumns="12" order="160">
                 <widget type="text" fieldname="motivobaja" maxlength="100"/>

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,13 +20,14 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\App\AppSettings;
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
 
-class Stop extends Base\ModelClass
+class Stop extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     /** @var bool */
@@ -77,12 +78,12 @@ class Stop extends Base\ModelClass
     /** @var string */
     public $usermodificacion;
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->activo = true;
-        $this->codpais = AppSettings::get('default', 'codpais');
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->codpais = Tools::settings('default', 'codpais');
+        $this->fechaalta = Tools::date();
         $this->useralta = Session::get('user')->nick ?? null;
     }
 
@@ -101,15 +102,14 @@ class Stop extends Base\ModelClass
         if ($this->comprobarSiActivo() === false) {
             return false;
         }
-
-        $utils = $this->toolBox()->utils();
-        $this->nombre = $utils->noHtml($this->nombre);
-        $this->ciudad = $utils->noHtml($this->ciudad);
-        $this->provincia = $utils->noHtml($this->provincia);
-        $this->codpostal = $utils->noHtml($this->codpostal);
-        $this->direccion = $utils->noHtml($this->direccion);
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
+        
+        $this->nombre = Tools::noHtml($this->nombre);
+        $this->ciudad = Tools::noHtml($this->ciudad);
+        $this->provincia = Tools::noHtml($this->provincia);
+        $this->codpostal = Tools::noHtml($this->codpostal);
+        $this->direccion = Tools::noHtml($this->direccion);
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
         return parent::test();
     }
 
@@ -121,7 +121,7 @@ class Stop extends Base\ModelClass
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
-        return parent::saveUpdate($values);
+        $this->fechamodificacion = Tools::date();
+        return parent::saveUpdate();
     }
 }

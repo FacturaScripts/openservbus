@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,14 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
 
-class EmployeeContract extends Base\ModelClass
+class EmployeeContract extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     /** @var bool */
@@ -73,11 +75,11 @@ class EmployeeContract extends Base\ModelClass
     /** @var string */
     public $usermodificacion;
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->activo = true;
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->fechaalta = Tools::date();
         $this->useralta = Session::get('user')->nick ?? null;
     }
 
@@ -95,7 +97,7 @@ class EmployeeContract extends Base\ModelClass
     public function getEmployee(): EmployeeOpen
     {
         $employee = new EmployeeOpen();
-        $employee->loadFromCode($this->idemployee);
+        $employee->load($this->idemployee);
         return $employee;
     }
 
@@ -131,10 +133,9 @@ class EmployeeContract extends Base\ModelClass
         if ($this->comprobarSiActivo() === false) {
             return false;
         }
-
-        $utils = $this->toolBox()->utils();
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
+        
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
         return parent::test();
     }
 
@@ -143,7 +144,7 @@ class EmployeeContract extends Base\ModelClass
         return parent::url($type, $list . '?activetab=List');
     }
 
-    protected function Actualizar_idempresa_en_employees()
+    protected function Actualizar_idempresa_en_employees(): void
     {
         // Completamos el campo idempresa de la tabla employee
         $sql = " UPDATE employees_open "
@@ -160,7 +161,7 @@ class EmployeeContract extends Base\ModelClass
         self::$dataBase->exec($sql);
     }
 
-    protected function actualizar_campo_activo_enContratos_del_Empleado()
+    protected function actualizar_campo_activo_enContratos_del_Empleado(): void
     {
         // Buscamos el contrato con fecha_inicio + Fecha_fin más alta
         $sql = " SELECT IF(employee_contracts.idemployee_contract IS NOT NULL, employee_contracts.idemployee_contract, 0) AS idemployee_contract "
@@ -206,7 +207,7 @@ class EmployeeContract extends Base\ModelClass
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
-        return parent::saveUpdate($values);
+        $this->fechamodificacion = Tools::date();
+        return parent::saveUpdate();
     }
 }

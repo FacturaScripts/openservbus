@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@ class ListEmployeeOpen extends ListController
         $pageData = parent::getPageData();
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'employees';
-        $pageData['icon'] = 'far fa-id-card';
+        $pageData['icon'] = 'fa-regular fa-id-card';
         return $pageData;
     }
 
@@ -39,9 +39,9 @@ class ListEmployeeOpen extends ListController
         $this->createViewEmployeeContract();
     }
 
-    protected function createViewEmployee($viewName = 'ListEmployeeOpen')
+    protected function createViewEmployee($viewName = 'ListEmployeeOpen'): void
     {
-        $this->addView($viewName, 'EmployeeOpen', 'employees', 'far fa-id-card');
+        $this->addView($viewName, 'EmployeeOpen', 'employees', 'fa-regular fa-id-card');
         $this->addSearchFields($viewName, ['cod_employee', 'nombre', 'direccion']);
         $this->addOrderBy($viewName, ['nombre'], 'name', 1);
         $this->addOrderBy($viewName, ['cod_employee'], 'code');
@@ -63,9 +63,9 @@ class ListEmployeeOpen extends ListController
         $this->addFilterSelect($viewName, 'esConductor', 'driver-all', 'driver_yn', $esConductor);
     }
 
-    protected function createViewEmployeeContract($viewName = 'ListEmployeeContract')
+    protected function createViewEmployeeContract($viewName = 'ListEmployeeContract'): void
     {
-        $this->addView($viewName, 'EmployeeContract', 'contracts', 'fas fa-file-contract');
+        $this->addView($viewName, 'EmployeeContract', 'contracts', 'fa-solid fa-file-contract');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['fecha_inicio', 'fecha_fin'], 'fstart-fend');
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');

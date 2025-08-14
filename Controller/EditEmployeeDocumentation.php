@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ class EditEmployeeDocumentation extends EditController
         $pageData['showonmenu'] = false;
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'employee-document';
-        $pageData['icon'] = 'far fa-file-pdf';
+        $pageData['icon'] = 'fa-regular fa-file-pdf';
         return $pageData;
     }
 
@@ -72,7 +72,7 @@ class EditEmployeeDocumentation extends EditController
     {
         switch ($viewName) {
             case 'docfiles':
-                $this->loadDataDocFiles($view, $this->getModelClassName(), $this->getModel()->primaryColumnValue());
+                $this->loadDataDocFiles($view, $this->getModelClassName(), $this->getModel()->id());
                 break;
 
             default:

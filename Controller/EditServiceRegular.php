@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
-use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Core\Lib\ExtendedController\EditController;
+use FacturaScripts\Core\Where;
 use FacturaScripts\Plugins\OpenServBus\Model\Driver;
 use FacturaScripts\Plugins\OpenServBus\Model\Helper;
 
@@ -38,7 +38,7 @@ class EditServiceRegular extends EditController
         $pageData['showonmenu'] = false;
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'regular-service';
-        $pageData['icon'] = 'fas fa-book-open';
+        $pageData['icon'] = 'fa-solid fa-book-open';
         return $pageData;
     }
 
@@ -53,15 +53,15 @@ class EditServiceRegular extends EditController
         $this->setTabsPosition('top');
     }
 
-    protected function createViewContacts(string $viewName = 'EditDireccionContacto')
+    protected function createViewContacts(string $viewName = 'EditDireccionContacto'): void
     {
-        $this->addEditListView($viewName, 'Contacto', 'addresses-and-contacts', 'fas fa-address-book');
+        $this->addEditListView($viewName, 'Contacto', 'addresses-and-contacts', 'fa-solid fa-address-book');
         $this->views[$viewName]->setInLine(true);
     }
 
-    protected function createViewCombinationServs($viewName = 'ListServiceRegularCombinationServ')
+    protected function createViewCombinationServs($viewName = 'ListServiceRegularCombinationServ'): void
     {
-        $this->addListView($viewName, 'ServiceRegularCombinationServ', 'combinations', 'fas fa-briefcase');
+        $this->addListView($viewName, 'ServiceRegularCombinationServ', 'combinations', 'fa-solid fa-briefcase');
         $this->views[$viewName]->addOrderBy(['idservice_regular_combination', 'idservice_regular'], 'name', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
@@ -77,9 +77,9 @@ class EditServiceRegular extends EditController
         $this->views[$viewName]->addFilterAutocomplete('xIdservice_regular_combination', 'combination-service', 'idservice_regular_combination', 'service_regular_combinations', 'idservice_regular_combination', 'nombre');
     }
 
-    protected function createViewItineraries($viewName = 'ListServiceRegularItinerary')
+    protected function createViewItineraries($viewName = 'ListServiceRegularItinerary'): void
     {
-        $this->addListView($viewName, 'ServiceRegularItinerary', 'itineraries', 'fas fa-road');
+        $this->addListView($viewName, 'ServiceRegularItinerary', 'itineraries', 'fa-solid fa-road');
         $this->views[$viewName]->addOrderBy(['idservice_regular', 'orden'], 'by-itinerary', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
@@ -94,9 +94,9 @@ class EditServiceRegular extends EditController
         $this->views[$viewName]->addFilterAutocomplete('xIdstop', 'stop', 'idstop', 'stops', 'idstop', 'nombre');
     }
 
-    protected function createViewPeriods($viewName = 'ListServiceRegularPeriod')
+    protected function createViewPeriods($viewName = 'ListServiceRegularPeriod'): void
     {
-        $this->addListView($viewName, 'ServiceRegularPeriod', 'periods', 'fas fa-calendar-day');
+        $this->addListView($viewName, 'ServiceRegularPeriod', 'periods', 'fa-solid fa-calendar-day');
         $this->views[$viewName]->addOrderBy(['idservice_regular', 'fecha_desde', 'fecha_hasta', 'hora_desde', 'hora_hasta'], 'by-period', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
@@ -118,9 +118,9 @@ class EditServiceRegular extends EditController
         $this->views[$viewName]->addFilterPeriod('porFechaFin', 'date-end', 'fecha_hasta');
     }
 
-    protected function createViewValuations($viewName = 'ListServiceRegularValuation')
+    protected function createViewValuations($viewName = 'ListServiceRegularValuation'): void
     {
-        $this->addListView($viewName, 'ServiceRegularValuation', 'ratings', 'fas fa-dollar-sign');
+        $this->addListView($viewName, 'ServiceRegularValuation', 'ratings', 'fa-solid fa-dollar-sign');
 
         $this->views[$viewName]->addOrderBy(['idservice_regular', 'orden'], 'by-rating', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -142,7 +142,7 @@ class EditServiceRegular extends EditController
         switch ($viewName) {
             case 'EditDireccionContacto':
                 $codcliente = $this->getViewModelValue($mvn, 'codcliente');
-                $where = [new DatabaseWhere('codcliente', $codcliente)];
+                $where = [Where::column('codcliente', $codcliente)];
                 $view->loadData('', $where);
                 break;
 
@@ -152,7 +152,7 @@ class EditServiceRegular extends EditController
             $this->loadValuesSelectDrivers($mvn, 'usual-driver');
             case 'ListServiceRegularPeriod':
                 $idservice_regular = $this->getViewModelValue($mvn, 'idservice_regular');
-                $where = [new DatabaseWhere('idservice_regular', $idservice_regular)];
+                $where = [Where::column('idservice_regular', $idservice_regular)];
                 $view->loadData('', $where);
                 break;
 
@@ -170,7 +170,7 @@ class EditServiceRegular extends EditController
         }
     }
 
-    protected function loadValuesSelectDrivers(string $mvn, string $columnName)
+    protected function loadValuesSelectDrivers(string $mvn, string $columnName): void
     {
         $column = $this->views[$mvn]->columnForName($columnName);
         if($column && $column->widget->getType() === 'select') {
@@ -187,7 +187,7 @@ class EditServiceRegular extends EditController
         }
     }
 
-    protected function loadValuesSelectHelpers(string $mvn)
+    protected function loadValuesSelectHelpers(string $mvn): void
     {
         $column = $this->views[$mvn]->columnForName('helper');
         if($column && $column->widget->getType() === 'select') {

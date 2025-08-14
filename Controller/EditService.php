@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
-use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Core\Lib\ExtendedController\EditController;
+use FacturaScripts\Core\Where;
 use FacturaScripts\Plugins\OpenServBus\Model\Driver;
 use FacturaScripts\Plugins\OpenServBus\Model\Helper;
 
@@ -38,7 +38,7 @@ class EditService extends EditController
         $pageData['showonmenu'] = false;
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'service-discretionary';
-        $pageData['icon'] = 'fas fa-book-reader';
+        $pageData['icon'] = 'fa-solid fa-book-reader';
         return $pageData;
     }
 
@@ -51,15 +51,15 @@ class EditService extends EditController
         $this->setTabsPosition('top');
     }
 
-    protected function createViewContacts(string $viewName = 'EditDireccionContacto')
+    protected function createViewContacts(string $viewName = 'EditDireccionContacto'): void
     {
-        $this->addEditListView($viewName, 'Contacto', 'addresses-and-contacts', 'fas fa-address-book');
+        $this->addEditListView($viewName, 'Contacto', 'addresses-and-contacts', 'fa-solid fa-address-book');
         $this->views[$viewName]->setInLine(true);
     }
 
-    protected function createViewItineraries($viewName = 'ListServiceItinerary')
+    protected function createViewItineraries($viewName = 'ListServiceItinerary'): void
     {
-        $this->addListView($viewName, 'ServiceItinerary', 'itineraries', 'fas fa-road');
+        $this->addListView($viewName, 'ServiceItinerary', 'itineraries', 'fa-solid fa-road');
         $this->views[$viewName]->addSearchFields(['nombre']);
         $this->views[$viewName]->addOrderBy(['idservice', 'orden'], 'by-itinerary', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -74,9 +74,9 @@ class EditService extends EditController
         $this->views[$viewName]->addFilterAutocomplete('xIdservice', 'service-discretionary', 'idservice', 'services', 'idservice', 'nombre');
     }
 
-    protected function createViewValuations($viewName = 'ListServiceValuation')
+    protected function createViewValuations($viewName = 'ListServiceValuation'): void
     {
-        $this->addListView($viewName, 'ServiceValuation', 'ratings', 'fas fa-dollar-sign');
+        $this->addListView($viewName, 'ServiceValuation', 'ratings', 'fa-solid fa-dollar-sign');
         $this->views[$viewName]->addOrderBy(['idservice', 'orden'], 'by-rating', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
@@ -91,7 +91,7 @@ class EditService extends EditController
         $this->views[$viewName]->addFilterAutocomplete('xIdservice_valuation_type', 'concepts-valuation', 'idservice_valuation_type', 'service_valuation_types', 'idservice_valuation_type', 'nombre');
     }
 
-    protected function displayNoneField($viewName, $fieldName)
+    protected function displayNoneField($viewName, $fieldName): void
     {
         $column = $this->views[$viewName]->columnForField($fieldName);
         $column->display = 'none';
@@ -103,14 +103,14 @@ class EditService extends EditController
         switch ($viewName) {
             case 'EditDireccionContacto':
                 $codcliente = $this->getViewModelValue($mvn, 'codcliente');
-                $where = [new DatabaseWhere('codcliente', $codcliente)];
+                $where = [Where::column('codcliente', $codcliente)];
                 $view->loadData('', $where);
                 break;
 
             case 'ListServiceItinerary':
             case 'ListServiceValuation':
                 $idservice = $this->getViewModelValue($mvn, 'idservice');
-                $where = [new DatabaseWhere('idservice', $idservice)];
+                $where = [Where::column('idservice', $idservice)];
                 $view->loadData('', $where);
                 break;
 
@@ -129,7 +129,7 @@ class EditService extends EditController
         }
     }
 
-    protected function loadValuesSelectDrivers(string $mvn, string $columnName)
+    protected function loadValuesSelectDrivers(string $mvn, string $columnName): void
     {
         $column = $this->views[$mvn]->columnForName($columnName);
         if($column && $column->widget->getType() === 'select') {
@@ -146,7 +146,7 @@ class EditService extends EditController
         }
     }
 
-    protected function loadValuesSelectHelpers(string $mvn)
+    protected function loadValuesSelectHelpers(string $mvn): void
     {
         $column = $this->views[$mvn]->columnForName('helper');
         if($column && $column->widget->getType() === 'select') {
@@ -163,13 +163,13 @@ class EditService extends EditController
         }
     }
 
-    protected function readOnlyField($viewName, $fieldName)
+    protected function readOnlyField($viewName, $fieldName): void
     {
         $column = $this->views[$viewName]->columnForField($fieldName);
         $column->widget->readonly = 'true';
     }
 
-    protected function readOnlyFields($viewName)
+    protected function readOnlyFields($viewName): void
     {
         if (!empty($this->views[$viewName]->model->idfactura)) {
             $this->readOnlyField($viewName, 'idservice');

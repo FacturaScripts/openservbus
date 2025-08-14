@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
-use FacturaScripts\Core\Base\DataBase\DataBaseWhere;
 use FacturaScripts\Core\Lib\ExtendedController\ListController;
+use FacturaScripts\Core\Where;
 
 class ListDriver extends ListController
 {
@@ -30,7 +30,7 @@ class ListDriver extends ListController
         $pageData = parent::getPageData();
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'drivers';
-        $pageData['icon'] = 'fas fa-user-astronaut';
+        $pageData['icon'] = 'fa-solid fa-user-astronaut';
         return $pageData;
     }
 
@@ -39,9 +39,9 @@ class ListDriver extends ListController
         $this->createViewDriver();
     }
 
-    protected function createViewDriver($viewName = 'ListDriver')
+    protected function createViewDriver($viewName = 'ListDriver'): void
     {
-        $this->addView($viewName, 'Driver', 'drivers', 'fas fa-user-astronaut');
+        $this->addView($viewName, 'Driver', 'drivers', 'fa-solid fa-user-astronaut');
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
         // Filtros
@@ -56,8 +56,8 @@ class ListDriver extends ListController
             'status',
             [
                 ['label' => 'Colaboradores/Empleados - Todos', 'where' => []],
-                ['label' => 'Colaboradores sólo', 'where' => [new DataBaseWhere('idcollaborator', '0', '>')]],
-                ['label' => 'Empleados sólo', 'where' => [new DataBaseWhere('idemployee', '0', '>')]]
+                ['label' => 'Colaboradores sólo', 'where' => [Where::column('idcollaborator', '0', '>')]],
+                ['label' => 'Empleados sólo', 'where' => [Where::column('idemployee', '0', '>')]]
             ]
         );
     }

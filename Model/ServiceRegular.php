@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,14 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
 
-class ServiceRegular extends Base\ModelClass
+class ServiceRegular extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     /** @var bool */
@@ -226,7 +228,7 @@ class ServiceRegular extends Base\ModelClass
     /** @var bool */
     public $viernes;
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->aceptado = false;
@@ -234,7 +236,7 @@ class ServiceRegular extends Base\ModelClass
         $this->domingo = false;
         $this->facturar_agrupando = true;
         $this->facturar_SN = true;
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->fechaalta = Tools::date();
         $this->importe = 0;
         $this->importe_enextranjero = 0;
         $this->jueves = false;
@@ -264,7 +266,7 @@ class ServiceRegular extends Base\ModelClass
         return 'idservice_regular';
     }
 
-    public function rellenarTotal()
+    public function rellenarTotal(): void
     {
         $cliente_RegimenIVA = '';
         $cliente_CodRetencion = '';
@@ -319,7 +321,7 @@ class ServiceRegular extends Base\ModelClass
         return parent::test();
     }
 
-    protected function calcularImpuesto($importe, $codimpuesto, $cliente_RegimenIVA, $cliente_PorcentajeRetencion, &$total)
+    protected function calcularImpuesto($importe, $codimpuesto, $cliente_RegimenIVA, $cliente_PorcentajeRetencion, &$total): void
     {
         $impto_tipo = 0.0;
         $impto_IVA = 0.0;
@@ -382,7 +384,7 @@ class ServiceRegular extends Base\ModelClass
     {
         // Comprobamos que el código se ha introducido correctamente
         if (!empty($this->cod_servicio) && 1 !== \preg_match('/^[A-Z0-9_\+\.\-]{1,10}$/i', $this->cod_servicio)) {
-            $this->toolBox()->i18nLog()->error(
+            Tools::log()->error(
                 'invalid-alphanumeric-code',
                 ['%value%' => $this->cod_servicio, '%column%' => 'cod_servicio', '%min%' => '1', '%max%' => '10']
             );
@@ -396,87 +398,87 @@ class ServiceRegular extends Base\ModelClass
             $this->viernes === false &&
             $this->sabado === false &&
             $this->domingo === false) {
-            $this->toolBox()->i18nLog()->error('service-regular-choose-days-of-week');
+            Tools::log()->error('service-regular-choose-days-of-week');
             return false;
         }
 
         if ($this->facturar_SN === false && $this->facturar_agrupando === true) {
-            $this->toolBox()->i18nLog()->error('billing-is-no-cannot-grouping-yes');
+            Tools::log()->error('billing-is-no-cannot-grouping-yes');
             return false;
         }
 
         if (empty($this->codcliente)) {
-            $this->toolBox()->i18nLog()->error('assign-service-to-customer');
+            Tools::log()->error('assign-service-to-customer');
             return false;
         }
 
         if (empty($this->nombre)) {
-            $this->toolBox()->i18nLog()->error('complete-description-of-service');
+            Tools::log()->error('complete-description-of-service');
             return false;
         }
 
         if (empty($this->hoja_ruta_origen)) {
-            $this->toolBox()->i18nLog()->error('complete-origin-of-roadmap');
+            Tools::log()->error('complete-origin-of-roadmap');
             return false;
         }
 
         if (empty($this->hoja_ruta_destino)) {
-            $this->toolBox()->i18nLog()->error('complete-destination-of-roadmap');
+            Tools::log()->error('complete-destination-of-roadmap');
             return false;
         }
 
         if (empty($this->hoja_ruta_expediciones)) {
-            $this->toolBox()->i18nLog()->error('complete-expeditions-of-roadmap');
+            Tools::log()->error('complete-expeditions-of-roadmap');
             return false;
         }
 
         if (empty($this->hoja_ruta_contratante)) {
-            $this->toolBox()->i18nLog()->error('complete-contracting-of-roadmap');
+            Tools::log()->error('complete-contracting-of-roadmap');
             return false;
         }
 
         if (empty($this->hoja_ruta_tipoidfiscal)) {
-            $this->toolBox()->i18nLog()->error('complete-fiscal-id-of-roadmap');
+            Tools::log()->error('complete-fiscal-id-of-roadmap');
             return false;
         }
 
         if (empty($this->hoja_ruta_cifnif)) {
-            $this->toolBox()->i18nLog()->error('complete-fiscal-number-of-roadmap');
+            Tools::log()->error('complete-fiscal-number-of-roadmap');
             return false;
         }
 
         if (empty($this->idempresa)) {
-            $this->toolBox()->i18nLog()->error('complete-company-performs-service');
+            Tools::log()->error('complete-company-performs-service');
             return false;
         }
 
         if (empty($this->importe)) {
-            $this->toolBox()->i18nLog()->error('complete-amount-national-km');
+            Tools::log()->error('complete-amount-national-km');
             return false;
         }
 
         if (empty($this->codimpuesto)) {
-            $this->toolBox()->i18nLog()->error('have-not-type-tax-national-km');
+            Tools::log()->error('have-not-type-tax-national-km');
             return false;
         }
 
         if (empty($this->importe_enextranjero)) {
-            $this->toolBox()->i18nLog()->error('complete-amount-abroad-km');
+            Tools::log()->error('complete-amount-abroad-km');
             return false;
         }
 
         if (empty($this->codimpuesto_enextranjero)) {
-            $this->toolBox()->i18nLog()->error('have-not-type-tax-abroad-km');
+            Tools::log()->error('have-not-type-tax-abroad-km');
             return false;
         }
 
         if (empty($this->plazas) or $this->plazas <= 0) {
-            $this->toolBox()->i18nLog()->error('complete-squares');
+            Tools::log()->error('complete-squares');
             return false;
         }
 
         if (!$this->aceptado) {
-            $this->toolBox()->i18nLog()->info('accept-service-able-mount');
+            Tools::log()->info('accept-service-able-mount');
         }
 
         if ($this->hayCombinacionesDondeEsteElServicioQueNoCoincidenLosDiasDeSemana() === true) {
@@ -484,7 +486,7 @@ class ServiceRegular extends Base\ModelClass
         }
 
         if (empty($this->iddriver_1) || empty($this->idvehicle)) {
-            $this->toolBox()->i18nLog()->info('service-default-priority');
+            Tools::log()->info('service-default-priority');
         }
 
         $this->completarCombinadoSN();
@@ -496,7 +498,7 @@ class ServiceRegular extends Base\ModelClass
         return true;
     }
 
-    protected function completarCombinadoSN()
+    protected function completarCombinadoSN(): void
     {
         if (empty($this->idservice_regular)) {
             return;
@@ -517,7 +519,7 @@ class ServiceRegular extends Base\ModelClass
         }
     }
 
-    protected function completarDatosUltimoPeriodo()
+    protected function completarDatosUltimoPeriodo(): void
     {
         if (empty($this->idservice_regular)) {
             return;
@@ -563,31 +565,30 @@ class ServiceRegular extends Base\ModelClass
         }
     }
 
-    protected function evitarInyeccionSQL()
+    protected function evitarInyeccionSQL(): void
     {
-        $utils = $this->toolBox()->utils();
-        $this->nombre = $utils->noHtml($this->nombre);
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->observaciones_montaje = $utils->noHtml($this->observaciones_montaje);
-        $this->observaciones_vehiculo = $utils->noHtml($this->observaciones_vehiculo);
-        $this->observaciones_facturacion = $utils->noHtml($this->observaciones_facturacion);
-        $this->observaciones_liquidacion = $utils->noHtml($this->observaciones_liquidacion);
-        $this->observaciones_drivers = $utils->noHtml($this->observaciones_drivers);
-        $this->hoja_ruta_origen = $utils->noHtml($this->hoja_ruta_origen);
-        $this->hoja_ruta_destino = $utils->noHtml($this->hoja_ruta_destino);
-        $this->hoja_ruta_expediciones = $utils->noHtml($this->hoja_ruta_expediciones);
-        $this->hoja_ruta_contratante = $utils->noHtml($this->hoja_ruta_contratante);
-        $this->hoja_ruta_tipoidfiscal = $utils->noHtml($this->hoja_ruta_tipoidfiscal);
-        $this->hoja_ruta_cifnif = $utils->noHtml($this->hoja_ruta_cifnif);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
-        $this->codsubcuenta_km_nacional = $utils->noHtml($this->codsubcuenta_km_nacional);
-        $this->codsubcuenta_km_extranjero = $utils->noHtml($this->codsubcuenta_km_extranjero);
-        $this->driver_alojamiento_1 = $utils->noHtml($this->driver_alojamiento_1);
-        $this->driver_observaciones_1 = $utils->noHtml($this->driver_observaciones_1);
-        $this->driver_alojamiento_2 = $utils->noHtml($this->driver_alojamiento_2);
-        $this->driver_observaciones_2 = $utils->noHtml($this->driver_observaciones_2);
-        $this->driver_alojamiento_3 = $utils->noHtml($this->driver_alojamiento_3);
-        $this->driver_observaciones_3 = $utils->noHtml($this->driver_observaciones_3);
+        $this->nombre = Tools::noHtml($this->nombre);
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->observaciones_montaje = Tools::noHtml($this->observaciones_montaje);
+        $this->observaciones_vehiculo = Tools::noHtml($this->observaciones_vehiculo);
+        $this->observaciones_facturacion = Tools::noHtml($this->observaciones_facturacion);
+        $this->observaciones_liquidacion = Tools::noHtml($this->observaciones_liquidacion);
+        $this->observaciones_drivers = Tools::noHtml($this->observaciones_drivers);
+        $this->hoja_ruta_origen = Tools::noHtml($this->hoja_ruta_origen);
+        $this->hoja_ruta_destino = Tools::noHtml($this->hoja_ruta_destino);
+        $this->hoja_ruta_expediciones = Tools::noHtml($this->hoja_ruta_expediciones);
+        $this->hoja_ruta_contratante = Tools::noHtml($this->hoja_ruta_contratante);
+        $this->hoja_ruta_tipoidfiscal = Tools::noHtml($this->hoja_ruta_tipoidfiscal);
+        $this->hoja_ruta_cifnif = Tools::noHtml($this->hoja_ruta_cifnif);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
+        $this->codsubcuenta_km_nacional = Tools::noHtml($this->codsubcuenta_km_nacional);
+        $this->codsubcuenta_km_extranjero = Tools::noHtml($this->codsubcuenta_km_extranjero);
+        $this->driver_alojamiento_1 = Tools::noHtml($this->driver_alojamiento_1);
+        $this->driver_observaciones_1 = Tools::noHtml($this->driver_observaciones_1);
+        $this->driver_alojamiento_2 = Tools::noHtml($this->driver_alojamiento_2);
+        $this->driver_observaciones_2 = Tools::noHtml($this->driver_observaciones_2);
+        $this->driver_alojamiento_3 = Tools::noHtml($this->driver_alojamiento_3);
+        $this->driver_observaciones_3 = Tools::noHtml($this->driver_observaciones_3);
     }
 
     protected function hayCombinacionesDondeEsteElServicioQueNoCoincidenLosDiasDeSemana(): bool
@@ -670,7 +671,7 @@ class ServiceRegular extends Base\ModelClass
         }
 
         foreach ($combinacionesConDiasDiferentes as $combinacion) {
-            $this->toolBox()->i18nLog()->error("days-week-combination-not-coincide-with-week-service", ['%combination%' => $combinacion]);
+            Tools::log()->error("days-week-combination-not-coincide-with-week-service", ['%combination%' => $combinacion]);
         }
         return true;
     }
@@ -678,7 +679,7 @@ class ServiceRegular extends Base\ModelClass
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
-        return parent::saveUpdate($values);
+        $this->fechamodificacion = Tools::date();
+        return parent::saveUpdate();
     }
 }

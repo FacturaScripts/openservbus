@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@ class ListServiceRegular extends ListController
         $pageData = parent::getPageData();
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'regular-services';
-        $pageData['icon'] = 'fas fa-book-open';
+        $pageData['icon'] = 'fa-solid fa-book-open';
         return $pageData;
     }
 
@@ -44,9 +44,9 @@ class ListServiceRegular extends ListController
         $this->createViewValuations();
     }
 
-    protected function createViewServiceRegular($viewName = 'ListServiceRegular')
+    protected function createViewServiceRegular($viewName = 'ListServiceRegular'): void
     {
-        $this->addView($viewName, 'ServiceRegular', 'regular-services', 'fas fa-book-open');
+        $this->addView($viewName, 'ServiceRegular', 'regular-services', 'fa-solid fa-book-open');
         $this->addSearchFields($viewName, ['cod_servicio', 'nombre']);
         $this->addOrderBy($viewName, ['nombre'], 'name', 1);
         $this->addOrderBy($viewName, ['cod_servicio'], 'code');
@@ -97,9 +97,9 @@ class ListServiceRegular extends ListController
         $this->addFilterAutocomplete($viewName, 'xIdempresa', 'company', 'idempresa', 'empresas', 'idempresa', 'nombre');
     }
 
-    protected function createViewServiceRegularCombination($viewName = 'ListServiceRegularCombination')
+    protected function createViewServiceRegularCombination($viewName = 'ListServiceRegularCombination'): void
     {
-        $this->addView($viewName, 'ServiceRegularCombination', 'combinations', 'fas fa-briefcase');
+        $this->addView($viewName, 'ServiceRegularCombination', 'combinations', 'fa-solid fa-briefcase');
         $this->addSearchFields($viewName, ['nombre']);
         $this->addOrderBy($viewName, ['nombre'], 'name', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -114,9 +114,9 @@ class ListServiceRegular extends ListController
         $this->addFilterAutocomplete($viewName, 'xIdVehicle', 'vehicle', 'idvehicle', 'vehicles', 'idvehicle', 'nombre');
     }
 
-    protected function createViewServiceRegularCombinationServ($viewName = 'ListServiceRegularCombinationServ')
+    protected function createViewServiceRegularCombinationServ($viewName = 'ListServiceRegularCombinationServ'): void
     {
-        $this->addView($viewName, 'ServiceRegularCombinationServ', 'combinations-services', 'fas fa-cogs');
+        $this->addView($viewName, 'ServiceRegularCombinationServ', 'combinations-services', 'fa-solid fa-cogs');
         $this->addOrderBy($viewName, ['idservice_regular_combination', 'idservice_regular'], 'name', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
@@ -132,9 +132,9 @@ class ListServiceRegular extends ListController
         $this->addFilterAutocomplete($viewName, 'xIdservice_regular', 'service-regular', 'idservice_regular', 'service_regulars', 'idservice_regular', 'nombre');
     }
 
-    protected function createViewServiceRegularItinerary($viewName = 'ListServiceRegularItinerary')
+    protected function createViewServiceRegularItinerary($viewName = 'ListServiceRegularItinerary'): void
     {
-        $this->addView($viewName, 'ServiceRegularItinerary', 'serv-regulars-itineraries', 'fas fa-road');
+        $this->addView($viewName, 'ServiceRegularItinerary', 'serv-regulars-itineraries', 'fa-solid fa-road');
         $this->addOrderBy($viewName, ['idservice_regular', 'orden'], 'by-itinerary', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
@@ -149,9 +149,9 @@ class ListServiceRegular extends ListController
         $this->addFilterAutocomplete($viewName, 'xIdstop', 'Parada', 'idstop', 'stops', 'idstop', 'nombre');
     }
 
-    protected function createViewServiceRegularPeriod($viewName = 'ListServiceRegularPeriod')
+    protected function createViewServiceRegularPeriod($viewName = 'ListServiceRegularPeriod'): void
     {
-        $this->addView($viewName, 'ServiceRegularPeriod', 'periods', 'fas fa-calendar-alt');
+        $this->addView($viewName, 'ServiceRegularPeriod', 'periods', 'fa-solid fa-calendar-alt');
         $this->addOrderBy($viewName, ['idservice_regular', 'fecha_desde', 'fecha_hasta', 'hora_desde', 'hora_hasta'], 'by-period', 1);
         $this->addOrderBy($viewName, ['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
 
@@ -173,9 +173,9 @@ class ListServiceRegular extends ListController
         $this->addFilterPeriod($viewName, 'porFechaFin', 'date-end', 'fecha_hasta');
     }
 
-    protected function createViewValuations($viewName = 'ListServiceRegularValuation')
+    protected function createViewValuations($viewName = 'ListServiceRegularValuation'): void
     {
-        $this->addView($viewName, 'ServiceRegularValuation', 'ratings', 'fas fa-dollar-sign');
+        $this->addView($viewName, 'ServiceRegularValuation', 'ratings', 'fa-solid fa-dollar-sign');
 
         $this->views[$viewName]->addOrderBy(['idservice_regular', 'orden'], 'by-rating', 1);
         $this->views[$viewName]->addOrderBy(['fechaalta', 'fechamodificacion'], 'fhigh-fmodiff');
@@ -204,7 +204,7 @@ class ListServiceRegular extends ListController
         }
     }
 
-    protected function loadValuesSelectDrivers(string $mvn, string $columnName)
+    protected function loadValuesSelectDrivers(string $mvn, string $columnName): void
     {
         $column = $this->views[$mvn]->columnForName($columnName);
         if($column && $column->widget->getType() === 'select') {

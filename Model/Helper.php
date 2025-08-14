@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,14 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
 
-class Helper extends Base\ModelClass
+class Helper extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     /** @var bool */
@@ -78,11 +80,11 @@ class Helper extends Base\ModelClass
         return null;
     }
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->activo = true;
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->fechaalta = Tools::date();
         $this->useralta = Session::get('user')->nick ?? null;
     }
 
@@ -107,44 +109,43 @@ class Helper extends Base\ModelClass
     {
         // Exigimos que se introduzca idempresa o idcollaborator
         if ((empty($this->idemployee)) && (empty($this->idcollaborator))) {
-            $this->toolBox()->i18nLog()->error('confirm-employee-or-collaborating');
+            Tools::log()->error('confirm-employee-or-collaborating');
             return false;
         }
 
         // No debe de elegir empleado y colaborador a la vez
         if ((!empty($this->idemployee)) && (!empty($this->idcollaborator))) {
-            $this->toolBox()->i18nLog()->error('employee-or-collaborating-bat-not-both');
+            Tools::log()->error('employee-or-collaborating-bat-not-both');
             return false;
         }
 
         if ($this->comprobarSiActivo() === false) {
             return false;
         }
-
-        $utils = $this->toolBox()->utils();
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
+        
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
         return parent::test();
     }
 
     protected function getCollaborator(): Collaborator
     {
         $collaborator = new Collaborator();
-        $collaborator->loadFromCode($this->idcollaborator);
+        $collaborator->load($this->idcollaborator);
         return $collaborator;
     }
 
     protected function getEmployee(): EmployeeOpen
     {
         $employee = new EmployeeOpen();
-        $employee->loadFromCode($this->idemployee);
+        $employee->load($this->idemployee);
         return $employee;
     }
 
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
-        return parent::saveUpdate($values);
+        $this->fechamodificacion = Tools::date();
+        return parent::saveUpdate();
     }
 }

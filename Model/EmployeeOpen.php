@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,14 @@
 
 namespace FacturaScripts\Plugins\OpenServBus\Model;
 
-use FacturaScripts\Core\Model\Base;
 use FacturaScripts\Core\Session;
+use FacturaScripts\Core\Template\ModelClass;
+use FacturaScripts\Core\Template\ModelTrait;
+use FacturaScripts\Core\Tools;
 
-class EmployeeOpen extends Base\ModelClass
+class EmployeeOpen extends ModelClass
 {
-    use Base\ModelTrait;
+    use ModelTrait;
     use OpenServBusModelTrait;
 
     /** @var bool */
@@ -115,12 +117,12 @@ class EmployeeOpen extends Base\ModelClass
     /** @var string */
     public $web;
 
-    public function clear()
+    public function clear(): void
     {
         parent::clear();
         $this->activo = true;
-        $this->codpais = $this->toolBox()->appSettings()->get('default', 'codpais');
-        $this->fechaalta = date(static::DATETIME_STYLE);
+        $this->codpais = Tools::settings('default', 'codpais');
+        $this->fechaalta = Tools::date();
         $this->useralta = Session::get('user')->nick ?? null;
     }
 
@@ -142,7 +144,7 @@ class EmployeeOpen extends Base\ModelClass
 
         // Comprobamos que el código de empleado si se ha introducido correctamente
         if (!empty($this->cod_employee) && 1 !== preg_match('/^[A-Z0-9_\+\.\-]{1,10}$/i', $this->cod_employee)) {
-            $this->toolBox()->i18nLog()->error(
+            Tools::log()->error(
                 'invalid-alphanumeric-code',
                 ['%value%' => $this->cod_employee, '%column%' => 'cod_employee', '%min%' => '1', '%max%' => '10']
             );
@@ -151,30 +153,29 @@ class EmployeeOpen extends Base\ModelClass
 
         $this->comprobarSiEsConductor();
 
-        $utils = $this->toolBox()->utils();
-        $this->cod_employee = $utils->noHtml($this->cod_employee);
-        $this->user_facturascripts_nick = $utils->noHtml($this->user_facturascripts_nick);
-        $this->tipoidfiscal = $utils->noHtml($this->tipoidfiscal);
-        $this->cifnif = $utils->noHtml($this->cifnif);
-        $this->nombre = $utils->noHtml($this->nombre);
-        $this->ciudad = $utils->noHtml($this->ciudad);
-        $this->provincia = $utils->noHtml($this->provincia);
-        $this->codpais = $utils->noHtml($this->codpais);
-        $this->codpostal = $utils->noHtml($this->codpostal);
-        $this->apartado = $utils->noHtml($this->apartado);
-        $this->direccion = $utils->noHtml($this->direccion);
-        $this->telefono1 = $utils->noHtml($this->telefono1);
-        $this->telefono2 = $utils->noHtml($this->telefono2);
-        $this->email = $utils->noHtml($this->email);
-        $this->web = $utils->noHtml($this->web);
-        $this->observaciones = $utils->noHtml($this->observaciones);
-        $this->num_seg_social = $utils->noHtml($this->num_seg_social);
-        $this->motivobaja = $utils->noHtml($this->motivobaja);
+        $this->cod_employee = Tools::noHtml($this->cod_employee);
+        $this->user_facturascripts_nick = Tools::noHtml($this->user_facturascripts_nick);
+        $this->tipoidfiscal = Tools::noHtml($this->tipoidfiscal);
+        $this->cifnif = Tools::noHtml($this->cifnif);
+        $this->nombre = Tools::noHtml($this->nombre);
+        $this->ciudad = Tools::noHtml($this->ciudad);
+        $this->provincia = Tools::noHtml($this->provincia);
+        $this->codpais = Tools::noHtml($this->codpais);
+        $this->codpostal = Tools::noHtml($this->codpostal);
+        $this->apartado = Tools::noHtml($this->apartado);
+        $this->direccion = Tools::noHtml($this->direccion);
+        $this->telefono1 = Tools::noHtml($this->telefono1);
+        $this->telefono2 = Tools::noHtml($this->telefono2);
+        $this->email = Tools::noHtml($this->email);
+        $this->web = Tools::noHtml($this->web);
+        $this->observaciones = Tools::noHtml($this->observaciones);
+        $this->num_seg_social = Tools::noHtml($this->num_seg_social);
+        $this->motivobaja = Tools::noHtml($this->motivobaja);
         return parent::test();
     }
 
     // Comprobar si está creado como conductor
-    protected function comprobarSiEsConductor()
+    protected function comprobarSiEsConductor(): void
     {
         $sql = ' SELECT COUNT(*) AS cuantos '
             . ' FROM drivers '
@@ -192,7 +193,7 @@ class EmployeeOpen extends Base\ModelClass
     protected function saveUpdate(array $values = []): bool
     {
         $this->usermodificacion = Session::get('user')->nick ?? null;
-        $this->fechamodificacion = date(static::DATETIME_STYLE);
-        return parent::saveUpdate($values);
+        $this->fechamodificacion = Tools::date();
+        return parent::saveUpdate();
     }
 }

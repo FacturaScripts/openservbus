@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2023 Carlos Garcia Gomez            <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez            <carlos@facturascripts.com>
  * Copyright (C) 2021      Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,20 +21,24 @@
 namespace FacturaScripts\Plugins\OpenServBus;
 
 use FacturaScripts\Core\Base\DataBase;
-use FacturaScripts\Core\Base\InitClass;
-use FacturaScripts\Plugins\OpenServBus\Model\Service;
-use FacturaScripts\Plugins\OpenServBus\Model\ServiceRegular;
+use FacturaScripts\Core\Template\InitClass;
+use FacturaScripts\Dinamic\Model\Service;
+use FacturaScripts\Dinamic\Model\ServiceRegular;
 
 final class Init extends InitClass
 {
-    public function init()
+    public function init(): void
     {
         // se ejecuta cada vez que carga FacturaScripts (si este plugin está activado).
         $this->loadExtension(new Extension\Controller\EditRole());
         $this->loadExtension(new Extension\Controller\EditUser());
     }
 
-    public function update()
+    public function uninstall(): void
+    {
+    }
+
+    public function update(): void
     {
         new Service();
         new ServiceRegular();
@@ -42,7 +46,7 @@ final class Init extends InitClass
         $this->changeNameEmployee();
     }
 
-    private function changeNameEmployee()
+    private function changeNameEmployee(): void
     {
         // cambiamos el nombre de la tabla employees por employees_open
         // al actualizar a la versión 3.1
@@ -53,7 +57,7 @@ final class Init extends InitClass
         }
     }
 
-    protected function deleteColumnFromTable()
+    protected function deleteColumnFromTable(): void
     {
         // eliminamos las columnas deseadas de las tablas seleccionadas
         // al actualizar a la versión 3.0

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of OpenServBus plugin for FacturaScripts
- * Copyright (C) 2021-2022 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2021-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  * Copyright (C) 2021 Jerónimo Pedro Sánchez Manzano <socger@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 namespace FacturaScripts\Plugins\OpenServBus\Controller;
 
 use FacturaScripts\Core\Lib\ExtendedController\EditController;
+use FacturaScripts\Core\Tools;
 use FacturaScripts\Plugins\OpenServBus\Model\Driver;
 
 class EditFuelKm extends EditController
@@ -36,11 +37,11 @@ class EditFuelKm extends EditController
         $pageData['showonmenu'] = false;
         $pageData['menu'] = 'OpenServBus';
         $pageData['title'] = 'refueling-kms';
-        $pageData['icon'] = 'fas fa-gas-pump';
+        $pageData['icon'] = 'fa-solid fa-gas-pump';
         return $pageData;
     }
 
-    protected function getTipoTarjeta(string $p_viewName)
+    protected function getTipoTarjeta(string $p_viewName): void
     {
         if (!empty($this->views[$p_viewName]->model->idtarjeta)) {
             $sql = " SELECT tarjeta_types.nombre "
@@ -55,9 +56,9 @@ class EditFuelKm extends EditController
                 $this->views[$p_viewName]->model->tipo_tarjeta = $fila['nombre'];
 
                 if ($fila['de_pago'] == 1) {
-                    $this->views[$p_viewName]->model->es_de_pago = $this->toolBox()->i18n()->trans('yes');
+                    $this->views[$p_viewName]->model->es_de_pago = Tools::lang()->trans('yes');
                 } else {
-                    $this->views[$p_viewName]->model->es_de_pago = $this->toolBox()->i18n()->trans('no');
+                    $this->views[$p_viewName]->model->es_de_pago = Tools::lang()->trans('no');
                 }
             }
         }
@@ -79,7 +80,7 @@ class EditFuelKm extends EditController
         }
     }
 
-    protected function loadValuesSelectDrivers(string $mvn)
+    protected function loadValuesSelectDrivers(string $mvn): void
     {
         $column = $this->views[$mvn]->columnForName('driver');
         if($column && $column->widget->getType() === 'select') {
