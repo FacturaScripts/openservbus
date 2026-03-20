@@ -22,6 +22,9 @@ namespace FacturaScripts\Plugins\OpenServBus;
 
 use FacturaScripts\Core\Base\DataBase;
 use FacturaScripts\Core\Template\InitClass;
+use FacturaScripts\Core\Model\Role;
+use FacturaScripts\Core\Model\RoleAccess;
+use FacturaScripts\Core\Where;
 use FacturaScripts\Dinamic\Model\Service;
 use FacturaScripts\Dinamic\Model\ServiceRegular;
 
@@ -44,6 +47,8 @@ final class Init extends InitClass
         new ServiceRegular();
         $this->deleteColumnFromTable();
         $this->changeNameEmployee();
+
+        $this->createRoleForPlugin();
     }
 
     private function changeNameEmployee(): void
@@ -76,5 +81,74 @@ final class Init extends InitClass
                 }
             }
         }
+    }
+
+    private function createRoleForPlugin(): void
+    {
+        $roleName = 'OpenServBus';
+
+        new Role();
+        new RoleAccess();
+
+        $dataBase = new DataBase();
+        $dataBase->beginTransaction();
+
+        // creates the role if not exists
+        $role = new Role();
+        if (false === $role->load($roleName)) {
+            $role->codrole = $role->descripcion = $roleName;
+            if (false === $role->save()) {
+                $dataBase->rollback();
+                return;
+            }
+        }
+
+        // scan Controller and Extension/Controller for pagenames
+        $nameControllers = [];
+        $dirs = [__DIR__ . '/Controller', __DIR__ . '/Extension/Controller'];
+        foreach ($dirs as $dir) {
+            if (!is_dir($dir)) {
+                continue;
+            }
+            foreach (scandir($dir) as $file) {
+                if (!is_file($dir . DIRECTORY_SEPARATOR . $file)) {
+                    continue;
+                }
+                if (substr($file, -4) !== '.php') {
+                    continue;
+                }
+                $name = pathinfo($file, PATHINFO_FILENAME);
+                if (preg_match('/^(Edit|List|Report|Dashboard)/', $name)) {
+                    $nameControllers[] = $name;
+                }
+            }
+        }
+        $nameControllers = array_unique($nameControllers);
+
+        // check/create the role permissions
+        foreach ($nameControllers as $nameController) {
+            $roleAccess = new RoleAccess();
+            $where = [
+                Where::eq('codrole', $roleName),
+                Where::eq('pagename', $nameController)
+            ];
+            if ($roleAccess->loadWhere($where)) {
+                continue;
+            }
+
+            // creates the permission if not exists
+            $roleAccess->allowdelete = true;
+            $roleAccess->allowupdate = true;
+            $roleAccess->codrole = $roleName;
+            $roleAccess->pagename = $nameController;
+            $roleAccess->onlyownerdata = false;
+            if (false === $roleAccess->save()) {
+                $dataBase->rollback();
+                return;
+            }
+        }
+
+        // without problems = Commit
+        $dataBase->commit();
     }
 }
