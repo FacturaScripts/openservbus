@@ -21,12 +21,17 @@
 namespace FacturaScripts\Plugins\OpenServBus;
 
 use FacturaScripts\Core\Base\DataBase;
+use FacturaScripts\Core\Where;
 use FacturaScripts\Core\Template\InitClass;
+use FacturaScripts\Dinamic\Model\Role;
+use FacturaScripts\Dinamic\Model\RoleAccess;
 use FacturaScripts\Dinamic\Model\Service;
 use FacturaScripts\Dinamic\Model\ServiceRegular;
 
 final class Init extends InitClass
 {
+    const ROLE_NAME = 'OpenServbus';
+
     public function init(): void
     {
         // se ejecuta cada vez que carga FacturaScripts (si este plugin está activado).
@@ -44,9 +49,10 @@ final class Init extends InitClass
         new ServiceRegular();
         $this->deleteColumnFromTable();
         $this->changeNameEmployee();
+        $this->createRoleForPlugin();
     }
 
-    private function changeNameEmployee(): void
+    protected function changeNameEmployee(): void
     {
         // cambiamos el nombre de la tabla employees por employees_open
         // al actualizar a la versión 3.1
@@ -55,6 +61,108 @@ final class Init extends InitClass
             $sql = "ALTER TABLE employees RENAME employees_open";
             $dataBase->exec($sql);
         }
+    }
+
+    protected function createRoleForPlugin(): void
+    {
+        new Role();
+        new RoleAccess();
+
+        $dataBase = new DataBase();
+        $dataBase->beginTransaction();
+
+        // creates the role if not exists
+        $role = new Role();
+        if (false === $role->load(self::ROLE_NAME)) {
+            $role->codrole = $role->descripcion = self::ROLE_NAME;
+            if (false === $role->save()) {
+                // rollback and exit on fail
+                $dataBase->rollback();
+                return;
+            }
+        }
+
+        // checks the role permissions
+        $nameControllers = [
+            'ConfigOpenServBus',
+            'EditAbsenceReason',
+            'EditAdvertismentUser',
+            'EditCollaborator',
+            'EditDepartment',
+            'EditDocumentationType',
+            'EditDriver',
+            'EditEmployeeAttendanceManagement',
+            'EditEmployeeAttendanceManagementYn',
+            'EditEmployeeContract',
+            'EditEmployeeContractType',
+            'EditEmployeeDocumentation',
+            'EditEmployeeOpen',
+            'EditFuelKm',
+            'EditFuelPump',
+            'EditFuelType',
+            'EditGarage',
+            'EditHelper',
+            'EditIdentificationMean',
+            'EditService',
+            'EditServiceAssembly',
+            'EditServiceItinerary',
+            'EditServiceRegular',
+            'EditServiceRegularCombination',
+            'EditServiceRegularCombinationServ',
+            'EditServiceRegularItinerary',
+            'EditServiceRegularPeriod',
+            'EditServiceRegularValuation',
+            'EditServiceType',
+            'EditServiceValuation',
+            'EditServiceValuationType',
+            'EditStop',
+            'EditTarjeta',
+            'EditTarjetaType',
+            'EditUser',
+            'EditVehicle',
+            'EditVehicleDocumentation',
+            'EditVehicleEquipament',
+            'EditVehicleEquipamentType',
+            'EditVehicleType',
+            'ListAdvertismentUser',
+            'ListDriver',
+            'ListEmployeeAttendanceManagement',
+            'ListEmployeeOpen',
+            'ListFuelKm',
+            'ListHelper',
+            'ListService',
+            'ListServiceAssembly',
+            'ListServiceRegular',
+            'ListTarjeta',
+            'ListVehicle',
+            'ListVehicleDocumentation'
+        ];
+        foreach ($nameControllers as $nameController) {
+            $roleAccess = new RoleAccess();
+            $where = [
+                Where::eq('codrole', self::ROLE_NAME),
+                Where::eq('pagename', $nameController)
+            ];
+            if ($roleAccess->loadWhere($where)) {
+                // permission exists? Then skip
+                continue;
+            }
+
+            // creates the permission if not exists
+            $roleAccess->allowdelete = true;
+            $roleAccess->allowupdate = true;
+            $roleAccess->codrole = self::ROLE_NAME;
+            $roleAccess->pagename = $nameController;
+            $roleAccess->onlyownerdata = false;
+            if (false === $roleAccess->save()) {
+                // rollback and exit on fail
+                $dataBase->rollback();
+                return;
+            }
+        }
+
+        // without problems = Commit
+        $dataBase->commit();
     }
 
     protected function deleteColumnFromTable(): void
