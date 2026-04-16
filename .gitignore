@@ -7,3 +7,8 @@
 *.cache
 *.lock
 package-lock.json
+
+# IA
+CLAUDE.md
+/.claude
+.codex
