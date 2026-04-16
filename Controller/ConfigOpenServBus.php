@@ -23,7 +23,7 @@ namespace FacturaScripts\Plugins\OpenServBus\Controller;
 use FacturaScripts\Core\Lib\ExtendedController\PanelController;
 
 /**
- * @author Daniel Fernández Giménez <hola@danielfg.es>
+ * @author Daniel Fernández Giménez <contacto@danielfg.es>
  */
 class ConfigOpenServBus extends PanelController
 {
